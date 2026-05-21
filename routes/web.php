@@ -1,15 +1,18 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+ return Route::get('/home',HomeController::class)->name('home');
 });
-Route::get('view',function(){
-    return view('blog.index');
-});
-Route::view('/js','page');
-
+Route::view('form', 'dashboard.post.form'); 
 Route::view('/article','blog.single-article-view');
 Route::get('/home',HomeController::class)->name('home');
+
+Route::prefix('dashboard')->name('dashboard.')->group(function(){
+    Route::resource('categories',CategoryController::class);
+    Route::resource('posts',PostController::class);
+});

@@ -73,6 +73,34 @@
             scrollbar-width: none;
         }
     </style>
+    <style>
+        /* Ensure layout areas follow dark mode even if utilities are missing */
+        html.dark body, html.dark main {
+            background-color: #0b1326 !important;
+            color: #dae2fd !important;
+        }
+
+        html.dark header {
+            background-color: rgba(23,31,51,0.8) !important;
+            color: #dae2fd !important;
+            border-color: rgba(70,69,84,0.08) !important;
+        }
+
+        html.dark footer {
+            background-color: #060e20 !important;
+            color: #c7c4d7 !important;
+            border-color: rgba(70,69,84,0.06) !important;
+        }
+
+        html.dark header a, html.dark header .material-symbols-outlined, html.dark footer a {
+            color: #c7c4d7 !important;
+        }
+
+        html.dark header a.bg-primary,
+        html.dark header a.bg-primary * {
+            color: #1000a9 !important;
+        }
+    </style>
     
     
    
@@ -253,7 +281,7 @@
         class="fixed top-0 w-full z-50 bg-white/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant-light/30 dark:border-outline-variant/10 shadow-2xl shadow-primary/5 transition-colors">
         <div class="flex justify-between items-center max-w-max_width mx-auto px-gutter h-16">
             <div class="flex items-center gap-xl">
-                <a class="text-headline-md font-display font-extrabold text-primary tracking-tighter" href="#">
+                <a class="text-headline-md font-display font-extrabold text-primary tracking-tighter" href="{{route('home')}}">
                     <div class="flex items-center gap-2">
                         <img alt="Inkode Logo" class="h-8 w-auto object-contain"
                             src="{{asset('assets/images/logo.png')}}" />
@@ -282,10 +310,11 @@
                     <span class="block dark:hidden">dark_mode</span>
                     <span class="hidden dark:block">light_mode</span>
                 </button>
-                <button
-                    class="bg-primary text-on-primary px-md py-xs rounded-xl font-display font-bold text-body-md active:scale-95 transition-transform">
+                <a
+                    class="bg-[#6366f1] text-white  dark:text-[#07006c] px-md py-xs rounded-xl font-display font-bold text-body-md active:scale-95 transition-transform"
+                    href="{{ route('dashboard.posts.create') }}">
                     Create Post
-                </button>
+            </a>
                 <div
                     class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant-light dark:border-outline-variant">
                     <img alt="User profile"
@@ -294,7 +323,7 @@
             </div>
         </div>
     </header>
-    <main class="pt-24 pb-xl max-w-max_width mx-auto px-gutter {{$mainClass}}">
+    <main class="pt-16 pb-xl max-w-max_width mx-auto px-gutter {{$mainClass}}">
        {{$slot}}
     </main>
     <!-- Footer -->
