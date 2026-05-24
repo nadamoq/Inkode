@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\FileUpload;
+use App\Http\Requests\PostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -52,19 +56,23 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request ,FileUpload $file)
     {
         //
-        $request->merge([
+       
+
+        $clean= $request->validated();
+        $data=array_merge([
             'user_id' => 1, 
             'slug' => Str::slug($request->post('title')),
             'status' => 'published',
-        ]);
+            'image'=>$file->handle('cover_image','posts','public') ?? null,
+        ], $clean);
 
-        $post = Post::create($request->all());
+        $post = Post::create($data);
 
        
-       return redirect()->route('dashboard.posts.index');
+       return redirect()->route('dashboard.posts.index')->with(['success'=>true,'message'=>'Post created successfully']);
     }
 
     /**
@@ -89,17 +97,25 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, FileUpload $file,Post $post)
     {
         //
-        $request->merge([
-            'user_id' => 1, 
+        $clean = $request->validated();
+        $data = array_merge([
+            'user_id' => 1,
             'slug' => Str::slug($request->post('title')),
-        ]);
-        $post->update($request->all());
-        return redirect()->route('dashboard.posts.index');
+            'image'=>$file->handle('cover_image','posts','public') ?? null,
+        ], $clean);
+
+        $result=$post->update($data);
+
+        if($result && $request->hasFile('cover_image') && $previous=$post->getPrevious()['image']){
+            Storage::disk('public')->delete($previous);
+        }
+        return redirect()->route('dashboard.posts.index')->with(['success'=>true,'message'=>'Post updated successfully']);
     }
 
+  
     /**
      * Remove the specified resource from storage.
      */
@@ -107,7 +123,10 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrFail($id);
-        $post->delete();
-        return redirect()->route('dashboard.posts.index');
+        $result=$post->delete();
+        if($result && $post->image){
+            Storage::disk('public')->delete($post->image);
+        }
+        return redirect()->route('dashboard.posts.index')->with(['success'=>true,'message'=>'Post deleted successfully']);
     }
 }

@@ -296,24 +296,58 @@
 @endpush
 
 <!-- Sidebar: Content Controls (Left Side) -->
-<form action="{{ $action }}" method="Post">
+
+<form action="{{ $action }}" method="Post" enctype="multipart/form-data">
     @csrf
     @method($method ?? 'POST')
+   
     <div class="min-h-screen flex flex-col md:flex-row max-w-max_width mx-auto">
         <!-- Editor Canvas -->
         <aside
             class="w-full md:w-72 lg:w-80 shrink-0 border-r border-outline-variant bg-surface-container-lowest/50 p-6 space-y-8 h-[calc(100vh-64px)] sticky top-16 overflow-y-auto no-scrollbar">
             <!-- Cover Image -->
-            <section>
-                <h3 class="font-label-caps text-label-caps text-on-surface font-bold mb-4 uppercase">Cover Image
+          <section>
+                <h3 class="font-label-caps text-label-caps text-on-surface font-bold mb-4 uppercase">
+                    Cover Image
                 </h3>
-                <div
-                    class="aspect-video w-full rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary hover:bg-surface-container transition-all group">
-                    <span
-                        class="material-symbols-outlined text-on-surface group-hover:text-primary transition-colors">add_a_photo</span>
-                    <span class="font-label-caps text-label-caps text-on-surface font-semibold">Upload Image</span>
-                </div>
+
+                <label for="cover_image"
+                    class="aspect-video overflow-hidden w-full rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary hover:bg-surface-container transition-all group">
+
+                    @if ($post->image)
+                        <img
+                            src="{{ Storage::disk('public')->url($post->image) }}"
+                            alt="Cover Image"
+                            class="w-full h-full object-cover"/>
+                    @else
+                        <span
+                            class="material-symbols-outlined text-on-surface group-hover:text-primary transition-colors">
+                            add_a_photo
+                        </span>
+
+                        <span
+                            class="font-label-caps text-label-caps text-on-surface font-semibold">
+                            Upload Image
+                        </span>
+                    @endif
+                      
+                </label>
+
+                <input
+                    id="cover_image"
+                    type="file"
+                    name="cover_image"
+                     accept="image/*" 
+                    class="hidden"> 
+                 <p id="file-name"></p>
+                 
             </section>
+                @error('cover_image')
+                    @foreach ($errors->get('cover_image') as $message)
+                        
+                     <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @endforeach
+                @enderror
             <!-- Tags Management -->
             <section>
                 <h3 class="font-label-caps text-label-caps text-on-surface font-bold mb-4 uppercase">Tags</h3>
@@ -416,26 +450,37 @@
             <div class="max-w-3xl mx-auto px-6 py-12 lg:py-20">
                 <div class="editor-container">
                     <!-- Title Field -->
+                   
                     <textarea name="title"
                         class="w-full bg-transparent border-none focus:ring-0 font-headline-lg text-headline-lg resize-none placeholder:text-outline text-on-surface mb-12 overflow-hidden"
                         oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-                        placeholder="The title of your piece..." rows="1">{{ $post->title ?? '' }}</textarea>
+                        placeholder="The title of your piece..." rows="1">{{ old('title') ?? $post->title ?? '' }}
+                    </textarea>
+                    @error('title')
+                            <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
+                    @enderror   
                     <!-- Main Content Editor -->
                     <textarea name="content"
                         class="w-full min-h-[600px] bg-transparent border-none focus:outline-none font-body-lg text-body-lg text-on-surface leading-relaxed placeholder:text-outline"
                         contenteditable="true" data-placeholder="Start writing your story...">
-                       {{ $post->content ?? '' }}
+                       {{ old('content') ?? $post->content ?? '' }}
                         {{-- <p class="mb-8">In this space, distraction falls away. The borders of the interface
                             recede, leaving only the words. We prioritize clarity above all else, ensuring that
                             every sentence has room to breathe and every idea has the weight it deserves.</p>
                         --}}  
                     </textarea> 
+                    @error('content')
+                       <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
+                    @enderror
                 </div>
                  <!-- Post Category -->
                     <div class="space-y-xs">
                         <label
                             class="font-label-caps text-label-caps text-on-surface dark:text-on-surface-variant font-bold tracking-widest uppercase"
                             for="parent-category">Post's Category</label>
+                            @error('category_id')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
                         <div class="relative">
                           <select name="category_id"
                                 class="w-full appearance-none bg-surface-container-low dark:bg-surface-container-low border border-outline-variant/30 dark:border-outline-variant/30 rounded-lg px-md py-3 text-on-surface dark:text-on-surface focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all category-select"
@@ -443,7 +488,7 @@
                                  @if ($categories)
                                     @foreach ($categories as $category)
 
-                                        <option value="{{$category->id}}" @selected($post->category_id == $category->id)>{{$category->name}}</option>
+                                        <option value="{{$category->id}}" @selected(old('category_id') == $category->id || $post->category_id == $category->id)>{{$category->name}}</option>
                                 
                                     @endforeach
                                 @endif
@@ -461,6 +506,12 @@
 
     </div>
     @push('script')
+        <script>
+            const input = document.getElementById('cover_image');
+            input.addEventListener('change', function () {
+                document.getElementById('file-name').textContent = this.files[0]?.name+' is uploaded' ?? '';
+            });
+        </script>
         <script>
             // Simple auto-resize for title
             const tx = document.getElementsByTagName("textarea");

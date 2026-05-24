@@ -207,6 +207,12 @@
         <!-- Main Content Area -->
         <main class="flex-1 p-gutter min-h-screen dark:bg-[#0b1326]">
             <!-- Header Section -->
+            @session('success')
+                <div class="max-w-3xl mx-auto mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                    {{ session('message') }}
+                </div>
+                
+            @endsession
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-lg mb-xl">
                 <div>
                     <h1 class="font-headline-lg text-headline-lg text-on-surface dark:text-white mb-xs">Content
