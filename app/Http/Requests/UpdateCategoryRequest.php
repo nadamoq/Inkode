@@ -28,7 +28,9 @@ class UpdateCategoryRequest extends FormRequest
               'name' => 'nullable|string|max:255|unique:Categories,id,except,'.$this->id,
             // 'slug' => 'required|unique:categories,slug',
             'description' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:categories,id'
+            'parent_id' => 'nullable|exists:categories,id',
+            'excerpt'=>'nullable|string|max:255',
+            'tags'=>'nullable|string'
         ];
     }
 }

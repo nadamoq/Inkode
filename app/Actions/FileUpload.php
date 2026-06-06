@@ -16,8 +16,9 @@ class FileUpload
 
         if( $this->request->hasFile($key)){
 
-            $this->request->file($key)->store($path,$disk);
+          return  $this->request->file($key)->store($path,$disk);
         
         }
+        return null;
     }
 }

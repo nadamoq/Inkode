@@ -293,13 +293,13 @@
         <article class="flex-1 article-max-width mx-auto lg:mx-0">
             <header class="mb-12">
                 <nav class="flex items-center gap-2 mb-6 text-sm font-medium text-primary">
-                    <span>Development</span>
+                    <span><a href="{{route('dashboard.posts.index')}}">Posts</a></span>
                     <span class="material-symbols-outlined text-xs">chevron_right</span>
-                    <span>Cognition</span>
+                    <span>{{$post->category->name}}</span>
                 </nav>
                 <h1 class="geist-font text-headline-lg md:text-display font-extrabold text-on-surface leading-tight mb-8 "
                     style="margin-top: 50px">
-                    The Architecture of Silence: Designing for Focused Cognition
+                   {{$post->title}}
                 </h1>
                 <!-- Author Block (Repositioned for Inkode) -->
                 <div
@@ -308,7 +308,7 @@
                         <img class="w-10 h-10 rounded-full grayscale border border-outline"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrB-fTH_sGc-EoJs3tiJjk17n12cNKJM223VhyTD5FfEtDknySO7GKIj0HvaJ3d-MoqtVOP8Yfk-dObjmX9mmt7mFiMRgqqpHWCsYFFpmpKBTaBXmgoB4M75gSnf4MJhP1WCx3DUb1E9iLnP1S039Q9dKb0JB_82yuO9S-WADZqyUPUVc_7lpe6Od7eVj2dcesczICWUxGQu7qeDZM0cH-Zqb8erGsQU-AEaICg0K2DynpHlKKOtRY0rPe9qhTIpUEN05vqmFz9_FG" />
                         <div>
-                            <p class="font-bold text-on-surface">Julian Thorne</p>
+                            <p class="font-bold text-on-surface">{{$post->author->name}}</p>
                             <p class="text-xs text-on-surface-variant">Oct 24, 2024 · 12 min read</p>
                         </div>
                     </div>
@@ -414,28 +414,29 @@
                             <div>
                                 <p class="text-xs text-on-surface-variant uppercase tracking-wider font-bold">
                                     Published</p>
-                                <p class="font-bold text-on-surface">Oct 24</p>
+                                <p class="font-bold text-on-surface">{{ $post->published_at->format('M j, Y') }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-surface-container-low rounded-2xl border border-outline-variant transition-colors">
-                    <h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-4">More from
-                        Julian</h4>
-                    <div class="space-y-4">
-                        <a class="block group" href="#">
-                            <p class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors mb-1">
-                                The Ethics of Engagement</p>
-                            <p class="text-xs text-secondary">5 min read</p>
-                        </a>
-                        <a class="block group" href="#">
-                            <p
-                                class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors mb-1">
-                                Monochromatic Accessibility</p>
-                            <p class="text-xs text-secondary">8 min read</p>
-                        </a>
+                @if($post->author->posts->where('id', '!=', $post->id)->count() > 0)
+                    <div class="p-6 bg-surface-container-low rounded-2xl border border-outline-variant transition-colors">
+                        <h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-4">More from
+                            Julian</h4>
+                        <div class="space-y-4">
+                            @foreach ($post->author->posts->where('id', '!=', $post->id)->take(2) as $item)
+                                
+                            @endforeach
+                            <a class="block group" href="#">
+                                <p class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors mb-1">
+                                    {{ $item->title }}
+                                </p>
+                                <p class="text-xs text-secondary">5 min read</p>
+                            </a>
+                            
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </aside>
     </div>

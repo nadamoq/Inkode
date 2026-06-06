@@ -117,6 +117,35 @@
         }
     </script>
 @endpush
+
+@push('style')
+    <style>
+        /* Ensure TinyMCE outer container matches project theme */
+        html:not(.dark) .tox .tox-editor-container,
+        html:not(.dark) .tox .tox-editor-header,
+        html:not(.dark) .tox .tox-toolbar,
+        html:not(.dark) .tox .tox-editor-container .tox-edit-area__iframe {
+            background-color: #ffffff !important;
+            color: #191c1e !important;
+        }
+
+        html.dark .tox .tox-editor-container,
+        html.dark .tox .tox-editor-header,
+        html.dark .tox .tox-toolbar,
+        html.dark .tox .tox-editor-container .tox-edit-area__iframe {
+            background-color: #060e20 !important;
+            color: #dae2fd !important;
+        }
+
+        /* Boost contrast for placeholder when empty */
+        html:not(.dark) .mce-content-body:empty:before { color: #767586 !important; }
+        html.dark .mce-content-body:empty:before { color: #908fa0 !important; }
+    </style>
+@endpush
+<x-slot name="headScript">
+    <script src="https://cdn.tiny.cloud/1/vpoull6vyulnvrrp4zoflp6vftvchuvnvn650iyu1g4gy0pt/tinymce/8/tinymce.min.js"
+        referrerpolicy="origin" crossorigin="anonymous"></script>
+</x-slot>
 @push('style')
     <style>
         .material-symbols-outlined {
@@ -296,17 +325,25 @@
 @endpush
 
 <!-- Sidebar: Content Controls (Left Side) -->
-
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form action="{{ $action }}" method="Post" enctype="multipart/form-data">
     @csrf
     @method($method ?? 'POST')
-   
+
     <div class="min-h-screen flex flex-col md:flex-row max-w-max_width mx-auto">
         <!-- Editor Canvas -->
         <aside
             class="w-full md:w-72 lg:w-80 shrink-0 border-r border-outline-variant bg-surface-container-lowest/50 p-6 space-y-8 h-[calc(100vh-64px)] sticky top-16 overflow-y-auto no-scrollbar">
             <!-- Cover Image -->
-          <section>
+            <section>
                 <h3 class="font-label-caps text-label-caps text-on-surface font-bold mb-4 uppercase">
                     Cover Image
                 </h3>
@@ -315,60 +352,45 @@
                     class="aspect-video overflow-hidden w-full rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary hover:bg-surface-container transition-all group">
 
                     @if ($post->image)
-                        <img
-                            src="{{ Storage::disk('public')->url($post->image) }}"
-                            alt="Cover Image"
-                            class="w-full h-full object-cover"/>
+                        <img src="{{ Storage::disk('public')->url($post->image) }}" alt="Cover Image"
+                            class="w-full h-full object-cover" />
                     @else
                         <span
                             class="material-symbols-outlined text-on-surface group-hover:text-primary transition-colors">
                             add_a_photo
                         </span>
 
-                        <span
-                            class="font-label-caps text-label-caps text-on-surface font-semibold">
+                        <span class="font-label-caps text-label-caps text-on-surface font-semibold">
                             Upload Image
                         </span>
                     @endif
-                      
+
                 </label>
 
-                <input
-                    id="cover_image"
-                    type="file"
-                    name="cover_image"
-                     accept="image/*" 
-                    class="hidden"> 
-                 <p id="file-name"></p>
-                 
+                <input id="cover_image" type="file" name="cover_image" accept="image/*" class="hidden">
+                <p id="file-name"></p>
+
             </section>
-                @error('cover_image')
-                    @foreach ($errors->get('cover_image') as $message)
-                        
-                     <p class="text-red-500 text-sm">{{ $message }}</p>
-                    @endforeach
-                @enderror
+            @error('cover_image')
+                @foreach ($errors->get('cover_image') as $message)
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @endforeach
+            @enderror
             <!-- Tags Management -->
             <section>
                 <h3 class="font-label-caps text-label-caps text-on-surface font-bold mb-4 uppercase">Tags</h3>
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span
-                        class="bg-primary/10 text-primary px-3 py-1 rounded-full font-label-caps text-label-caps flex items-center gap-1 border border-primary/20">
-                        Minimalism <span
-                            class="material-symbols-outlined text-[14px] cursor-pointer hover:text-on-surface">close</span>
-                    </span>
-                    <span
-                        class="bg-secondary/10 text-secondary px-3 py-1 rounded-full font-label-caps text-label-caps flex items-center gap-1 border border-secondary/20">
-                        Writing <span
-                            class="material-symbols-outlined text-[14px] cursor-pointer hover:text-on-surface">close</span>
-                    </span>
-                </div>
                 <div class="relative">
-                    <input
+
+                    <input name="tags" id="tags"
                         class="w-full bg-surface-container-low border border-outline font-body-md text-on-surface rounded-lg px-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant"
                         placeholder="Add a tag..." type="text" />
                 </div>
             </section>
+            @error('tags')
+                @foreach ($errors->get('tags') as $message)
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @endforeach
+            @enderror
             <!-- SEO Preview -->
             <section>
                 <div class="flex justify-between items-center mb-4">
@@ -450,53 +472,58 @@
             <div class="max-w-3xl mx-auto px-6 py-12 lg:py-20">
                 <div class="editor-container">
                     <!-- Title Field -->
-                   
-                    <textarea name="title"
+                    <label for="title">Post's Title </label>
+                    <textarea name="title" id="title"
                         class="w-full bg-transparent border-none focus:ring-0 font-headline-lg text-headline-lg resize-none placeholder:text-outline text-on-surface mb-12 overflow-hidden"
                         oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-                        placeholder="The title of your piece..." rows="1">{{ old('title') ?? $post->title ?? '' }}
+                        placeholder="The title of your piece..." rows="1">{{ old('title') ?? ($post->title ?? '') }}
                     </textarea>
                     @error('title')
-                            <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
-                    @enderror   
+                        <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
+                    @enderror
+                    <!-- Main  Editor -->
+                    <textarea name="excerpt"
+                        class="w-full bg-transparent border-none focus:ring-0 font-headline-lg text-headline-lg resize-none placeholder:text-outline text-on-surface mb-12 overflow-hidden"
+                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                        placeholder="The excerpt of your piece..." rows="1">{{ old('excerpt') ?? ($post->excerpt ?? '') }}
+                    </textarea>
+                    @error('excerpt')
+                        <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
+                    @enderror
                     <!-- Main Content Editor -->
-                    <textarea name="content"
+                    <textarea name="content" id="content"
                         class="w-full min-h-[600px] bg-transparent border-none focus:outline-none font-body-lg text-body-lg text-on-surface leading-relaxed placeholder:text-outline"
                         contenteditable="true" data-placeholder="Start writing your story...">
-                       {{ old('content') ?? $post->content ?? '' }}
-                        {{-- <p class="mb-8">In this space, distraction falls away. The borders of the interface
-                            recede, leaving only the words. We prioritize clarity above all else, ensuring that
-                            every sentence has room to breathe and every idea has the weight it deserves.</p>
-                        --}}  
-                    </textarea> 
+                       {{ old('content') ?? ($post->content ?? '') }}
+                       
+                    </textarea>
                     @error('content')
-                       <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
+                        <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
                     @enderror
                 </div>
-                 <!-- Post Category -->
-                    <div class="space-y-xs">
-                        <label
-                            class="font-label-caps text-label-caps text-on-surface dark:text-on-surface-variant font-bold tracking-widest uppercase"
-                            for="parent-category">Post's Category</label>
-                            @error('category_id')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
-                            @enderror
-                        <div class="relative">
-                          <select name="category_id"
-                                class="w-full appearance-none bg-surface-container-low dark:bg-surface-container-low border border-outline-variant/30 dark:border-outline-variant/30 rounded-lg px-md py-3 text-on-surface dark:text-on-surface focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all category-select"
-                                id="category_id" >
-                                 @if ($categories)
-                                    @foreach ($categories as $category)
+                <!-- Post Category -->
+                <div class="space-y-xs">
+                    <label
+                        class="font-label-caps text-label-caps text-on-surface dark:text-on-surface-variant font-bold tracking-widest uppercase"
+                        for="parent-category">Post's Category</label>
+                    @error('category_id')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
+                    <div class="relative">
+                        <select name="category_id"
+                            class="w-full appearance-none bg-surface-container-low dark:bg-surface-container-low border border-outline-variant/30 dark:border-outline-variant/30 rounded-lg px-md py-3 text-on-surface dark:text-on-surface focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all category-select"
+                            id="category_id">
+                            @if ($categories)
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected(old('category_id') == $category->id || $post->category_id == $category->id)>
+                                        {{ $category->name }}</option>
+                                @endforeach
+                            @endif
 
-                                        <option value="{{$category->id}}" @selected(old('category_id') == $category->id || $post->category_id == $category->id)>{{$category->name}}</option>
-                                
-                                    @endforeach
-                                @endif
-             
-                              
-                            </select>
-                              </div>
+
+                        </select>
                     </div>
+                </div>
                 <button type="submit" style="float: right;"
                     class=" bg-primary text-on-primary px-6 py-3 rounded-lg font-ui-label text-ui-label hover:bg-primary-hover transition-colors">
                     Publish
@@ -507,9 +534,108 @@
     </div>
     @push('script')
         <script>
-            const input = document.getElementById('cover_image');
-            input.addEventListener('change', function () {
-                document.getElementById('file-name').textContent = this.files[0]?.name+' is uploaded' ?? '';
+            (function() {
+                const lightContentStyle = `
+                    body{background:#ffffff;color:#191c1e;font-family: Inter, Arial, sans-serif;line-height:1.7;font-size:16px;}
+                    .mce-content-body{background:#ffffff;color:#191c1e;caret-color:#4648d4;padding:18px;min-height:420px}
+                    p, h1, h2, h3, h4, h5, h6, li, blockquote{color:inherit}
+                    a{color:#4648d4}
+                    ::selection{background:#6063ee;color:#ffffff}
+                    img{max-width:100%;height:auto}`;
+
+                const darkContentStyle = `
+                    body{background:#060e20;color:#dae2fd;font-family: Inter, Arial, sans-serif;line-height:1.7;font-size:16px}
+                    .mce-content-body{background:#060e20;color:#dae2fd;caret-color:#c0c1ff;padding:18px;min-height:420px}
+                    p, h1, h2, h3, h4, h5, h6, li, blockquote{color:inherit}
+                    a{color:#c0c1ff}
+                    ::selection{background:#8083ff;color:#0d0096}
+                    img{max-width:100%;height:auto}`;
+
+                const plugins = [
+                    'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'media',
+                    'searchreplace', 'table', 'visualblocks', 'wordcount',
+                    'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker',
+                    'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate',
+                    'tinymceai', 'uploadcare', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes',
+                    'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword',
+                    'exportpdf'
+                ];
+
+                const toolbar = 'undo redo | tinymceai-chat tinymceai-quickactions tinymceai-review | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat';
+
+                let editorInstance = null;
+                let currentIsDark = document.documentElement.classList.contains('dark');
+
+                function getConfig(isDark) {
+                    return {
+                        selector: '#content',
+                        plugins,
+                        toolbar,
+                        skin: isDark ? 'oxide-dark' : 'oxide',
+                        content_style: isDark ? darkContentStyle : lightContentStyle,
+                        content_css: false,
+                        convert_urls: false,
+                        tinycomments_mode: 'embedded',
+                        tinycomments_author: 'Author name',
+                        mergetags_list: [{ value: 'First.Name', title: 'First Name' }, { value: 'Email', title: 'Email' }],
+                        tinymceai_token_provider: async () => {
+                            await fetch(`https://demo.api.tiny.cloud/1/vpoull6vyulnvrrp4zoflp6vftvchuvnvn650iyu1g4gy0pt/auth/random`, { method: "POST", credentials: "include" });
+                            return { token: await fetch(`https://demo.api.tiny.cloud/1/vpoull6vyulnvrrp4zoflp6vftvchuvnvn650iyu1g4gy0pt/jwt/tinymceai`, { credentials: "include" }).then(r => r.text()) };
+                        },
+                        uploadcare_public_key: '213ff330e4ddb4cc1f35',
+                        setup: (editor) => {
+                            editorInstance = editor;
+                        }
+                    };
+                }
+
+                async function initEditor(isDark) {
+                    if (editorInstance) {
+                        try { tinymce.remove(editorInstance); } catch (e) { console.warn('Error removing tiny:', e); }
+                        editorInstance = null;
+                    }
+                    await tinymce.init(getConfig(isDark));
+                }
+
+                // initialize
+                initEditor(currentIsDark);
+
+                // watch for theme (dark class on <html>) changes and re-init editor when changed
+                const observer = new MutationObserver(mutations => {
+                    for (const m of mutations) {
+                        if (m.attributeName === 'class') {
+                            const nowDark = document.documentElement.classList.contains('dark');
+                            if (nowDark !== currentIsDark) {
+                                currentIsDark = nowDark;
+                                initEditor(currentIsDark);
+                            }
+                        }
+                    }
+                });
+
+                observer.observe(document.documentElement, { attributes: true });
+            })();
+        </script>
+        <script>
+            const allTags = @json($allTags);
+            const existingTags = @json($existingTags);
+
+            const tagsInput = document.querySelector('#tags');
+
+            const tagify = new Tagify(tagsInput, {
+                whitelist: allTags,
+                enforceWhitelist: false,
+                originalInputValueFormat: values => JSON.stringify(values.map(item => item.value))
+            });
+
+            tagify.addTags(existingTags.map(t => ({
+                value: t
+            })));
+        </script>
+        <script>
+            const coverInput = document.getElementById('cover_image');
+            coverInput.addEventListener('change', function() {
+                document.getElementById('file-name').textContent = this.files[0]?.name + ' is uploaded' ?? '';
             });
         </script>
         <script>

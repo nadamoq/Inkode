@@ -3,10 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute ;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -22,6 +26,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
+        
+        'timezone',
+        'active',
+        'avatar',
+        'country_code',
+        
+
     ];
 
     /**
@@ -49,5 +61,19 @@ class User extends Authenticatable
     public function posts() {
 
         return $this->hasMany(Post::class); 
+    }
+    public function avatar():Attribute{
+        return new Attribute(
+            get:function(){
+                $this->image ? Storage::disk('public')->url($this->image):asset('assets/images/DefaultUser.png');
+
+            });
+    }
+    public function thumbnailUrl():Attribute{
+        return new Attribute(
+            get: function () {
+                $this->image ? Storage::disk('public')->url($this->image): asset('assets/images/logo.png');
+            }
+        );
     }
 }

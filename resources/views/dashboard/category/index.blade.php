@@ -242,14 +242,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div
-                        class="px-md py-4 bg-surface-variant/10 flex justify-between items-center text-[13px] text-on-surface-variant">
-                        <span>Showing 3 of 42 categories</span>
-                        <div class="flex gap-4">
-                            <button class="hover:text-primary disabled:opacity-30" disabled="">Previous</button>
-                            <button class="hover:text-primary">Next</button>
-                        </div>
-                    </div>
+                    {{$categories->links()}}
+                   
                 </div>
             </section>
         </div>

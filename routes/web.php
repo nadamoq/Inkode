@@ -12,7 +12,7 @@ Route::view('form', 'dashboard.post.form');
 Route::view('/article','blog.single-article-view');
 Route::get('/home',HomeController::class)->name('home');
 
-Route::prefix('dashboard')->name('dashboard.')->group(function(){
+Route::prefix('dashboard')->middleware('auth')->name('dashboard.')->group(function(){
     Route::resource('categories',CategoryController::class);
     Route::resource('posts',PostController::class);
 });

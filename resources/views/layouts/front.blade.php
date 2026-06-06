@@ -4,10 +4,11 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Inkode {{$title}}</title>
-    <link rel="icon" href="{{asset('assets/images/logo.png')}}" type="image/png"/>
+    <title>Inkode {{ $title }}</title>
+    <link rel="icon" href="{{ asset('assets/images/logo.png') }}" type="image/png" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    {{$headScript ?? ''}}
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
@@ -75,24 +76,27 @@
     </style>
     <style>
         /* Ensure layout areas follow dark mode even if utilities are missing */
-        html.dark body, html.dark main {
+        html.dark body,
+        html.dark main {
             background-color: #0b1326 !important;
             color: #dae2fd !important;
         }
 
         html.dark header {
-            background-color: rgba(23,31,51,0.8) !important;
+            background-color: rgba(23, 31, 51, 0.8) !important;
             color: #dae2fd !important;
-            border-color: rgba(70,69,84,0.08) !important;
+            border-color: rgba(70, 69, 84, 0.08) !important;
         }
 
         html.dark footer {
             background-color: #060e20 !important;
             color: #c7c4d7 !important;
-            border-color: rgba(70,69,84,0.06) !important;
+            border-color: rgba(70, 69, 84, 0.06) !important;
         }
 
-        html.dark header a, html.dark header .material-symbols-outlined, html.dark footer a {
+        html.dark header a,
+        html.dark header .material-symbols-outlined,
+        html.dark footer a {
             color: #c7c4d7 !important;
         }
 
@@ -101,9 +105,9 @@
             color: #1000a9 !important;
         }
     </style>
-    
-    
-   
+
+
+
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -270,7 +274,7 @@
                 }
             }
         }
-    </script> 
+    </script>
     @stack('style')
 </head>
 
@@ -281,23 +285,24 @@
         class="fixed top-0 w-full z-50 bg-white/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant-light/30 dark:border-outline-variant/10 shadow-2xl shadow-primary/5 transition-colors">
         <div class="flex justify-between items-center max-w-max_width mx-auto px-gutter h-16">
             <div class="flex items-center gap-xl">
-                <a class="text-headline-md font-display font-extrabold text-primary tracking-tighter" href="{{route('home')}}">
+                <a class="text-headline-md font-display font-extrabold text-primary tracking-tighter"
+                    href="{{ route('home') }}">
                     <div class="flex items-center gap-2">
                         <img alt="Inkode Logo" class="h-8 w-auto object-contain"
-                            src="{{asset('assets/images/logo.png')}}" />
+                            src="{{ asset('assets/images/logo.png') }}" />
                         <span class="dark:text-primary text-on-surface-light">Inkode</span>
                     </div>
                 </a>
                 <nav class="hidden md:flex gap-md font-display text-body-md">
                     @section('nav')
-                    <a class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium text-primary font-bold border-b-2 border-primary pb-1"
-                        href="{{route('home')}}">Feed</a><a
-                        class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium"
-                        href="#">Explore</a>
-                    <a class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium"
-                        href="#">Authors</a>
-                    <a class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium"
-                        href="#">Dashboard</a>
+                        <a class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium text-primary font-bold border-b-2 border-primary pb-1"
+                            href="{{ route('home') }}">Feed</a><a
+                            class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium"
+                            href="#">Explore</a>
+                        <a class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium"
+                            href="#">Authors</a>
+                        <a class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-medium"
+                            href="#">Dashboard</a>
                     @show
                 </nav>
             </div>
@@ -310,11 +315,10 @@
                     <span class="block dark:hidden">dark_mode</span>
                     <span class="hidden dark:block">light_mode</span>
                 </button>
-                <a
-                    class="bg-[#6366f1] text-white  dark:text-[#07006c] px-md py-xs rounded-xl font-display font-bold text-body-md active:scale-95 transition-transform"
+                <a class="bg-[#6366f1] text-white  dark:text-[#07006c] px-md py-xs rounded-xl font-display font-bold text-body-md active:scale-95 transition-transform"
                     href="{{ route('dashboard.posts.create') }}">
                     Create Post
-            </a>
+                </a>
                 <div
                     class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant-light dark:border-outline-variant">
                     <img alt="User profile"
@@ -323,8 +327,8 @@
             </div>
         </div>
     </header>
-    <main class="pt-16 pb-xl max-w-max_width mx-auto px-gutter {{$mainClass}}">
-       {{$slot}}
+    <main class="pt-16 pb-xl max-w-max_width mx-auto px-gutter {{ $mainClass }}">
+        {{ $slot }}
     </main>
     <!-- Footer -->
     <footer
@@ -359,72 +363,75 @@
         </div>
     </footer>
     <script>
-    //     const themeToggleBtn = document.getElementById('theme-toggle');
-    //     const htmlElement = document.documentElement;
+        //     const themeToggleBtn = document.getElementById('theme-toggle');
+        //     const htmlElement = document.documentElement;
 
-    //     themeToggleBtn.addEventListener('click', () => {
-    //         if (htmlElement.classList.contains('dark')) {
-    //             htmlElement.classList.remove('dark');
-    //             htmlElement.classList.add('light');
-    //         } else {
-    //             htmlElement.classList.remove('light');
-    //             htmlElement.classList.add('dark');
-    //         }
-    //     });
+        //     themeToggleBtn.addEventListener('click', () => {
+        //         if (htmlElement.classList.contains('dark')) {
+        //             htmlElement.classList.remove('dark');
+        //             htmlElement.classList.add('light');
+        //         } else {
+        //             htmlElement.classList.remove('light');
+        //             htmlElement.classList.add('dark');
+        //         }
+        //     });
     </script>
     <script>
-// document.addEventListener("DOMContentLoaded", () => {
-//     const html = document.documentElement;
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     const html = document.documentElement;
 
-//     const savedTheme = localStorage.getItem('theme');
+        //     const savedTheme = localStorage.getItem('theme');
 
-//     if (savedTheme === 'dark') {
-//         html.classList.add('dark');
-//     } else {
-//         html.classList.remove('dark');
-//     }
+        //     if (savedTheme === 'dark') {
+        //         html.classList.add('dark');
+        //     } else {
+        //         html.classList.remove('dark');
+        //     }
 
-//     const btn = document.getElementById('theme-toggle');
+        //     const btn = document.getElementById('theme-toggle');
 
-//     if (!btn) return;
+        //     if (!btn) return;
 
-//     btn.addEventListener('click', () => {
-//         html.classList.toggle('dark');
+        //     btn.addEventListener('click', () => {
+        //         html.classList.toggle('dark');
 
-//         localStorage.setItem(
-//             'theme',
-//             html.classList.contains('dark') ? 'dark' : 'light'
-//         );
-//     });
-// });
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const html = document.documentElement;
-    const btn = document.getElementById('theme-toggle');
+        //         localStorage.setItem(
+        //             'theme',
+        //             html.classList.contains('dark') ? 'dark' : 'light'
+        //         );
+        //     });
+        // });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const btn = document.getElementById('theme-toggle');
 
-    const saved = localStorage.getItem('theme');
+            const saved = localStorage.getItem('theme');
 
-    if (saved === 'dark') {
-        html.classList.add('dark');
-        html.classList.remove('light');
-    } else {
-        html.classList.remove('dark');
-        html.classList.add('light');
-    }
+            if (saved === 'dark') {
+                html.classList.add('dark');
+                html.classList.remove('light');
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+            }
 
-    if (!btn) return;
+            if (!btn) return;
 
-    btn.addEventListener('click', () => {
-        const shouldUseDark = !html.classList.contains('dark');
-        html.classList.toggle('dark', shouldUseDark);
-        html.classList.toggle('light', !shouldUseDark);
+            btn.addEventListener('click', () => {
+                const shouldUseDark = !html.classList.contains('dark');
+                html.classList.toggle('dark', shouldUseDark);
+                html.classList.toggle('light', !shouldUseDark);
 
-        localStorage.setItem('theme', shouldUseDark ? 'dark' : 'light');
-    });
-});
-</script>
-@stack('script')
+                localStorage.setItem('theme', shouldUseDark ? 'dark' : 'light');
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    @stack('script')
 </body>
 
 </html>

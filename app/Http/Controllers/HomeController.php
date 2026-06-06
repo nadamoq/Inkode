@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,6 +14,13 @@ class HomeController extends Controller
     public function __invoke(Request $request)
     {
         //
-        return view('blog.home');
+        $posts=Post::with('category', 'author','comments')->latest()->paginate(5);
+        $post=Post::with('category','tags')->latest()->first();
+        $tags=Tag::latest()->limit(10)->get();
+        return view('blog.home',[
+            'posts' => $posts,
+            'post' => $post,
+            'tags' => $tags
+        ]);
     }
 }

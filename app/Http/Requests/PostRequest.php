@@ -34,7 +34,8 @@ class PostRequest extends FormRequest
                     new RestrictedContent(['god','admin','gay'])],
             'category_id' => 'required|exists:categories,id',
             'cover_image' => 'required|image|max:2048|mimes:jpeg,png,jpg,gif,svg',
-            
+            'excerpt'=>'nullable|string|min:5|max:80',
+            'tags'=>['nullable','string','']
         ];
     }
     #[Override]

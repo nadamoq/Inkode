@@ -207,16 +207,10 @@
         <!-- Main Content Area -->
         <main class="flex-1 p-gutter min-h-screen dark:bg-[#0b1326]">
             <!-- Header Section -->
-            @session('success')
-                <div class="max-w-3xl mx-auto mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                    {{ session('message') }}
-                </div>
-                
-            @endsession
+            
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-lg mb-xl">
                 <div>
-                    <h1 class="font-headline-lg text-headline-lg text-on-surface dark:text-white mb-xs">Content
-                        Management</h1>
+                    <h1 class="font-headline-lg text-headline-lg text-on-surface dark:text-white mb-xs">Content Management</h1>
                     <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7]">Manage your intellectual output,
                         track performance, and schedule upcoming pieces.</p>
                 </div>
@@ -282,11 +276,17 @@
                     </div>
                     <p class="text-[12px] font-bold text-primary dark:text-[#c0c1ff] uppercase mb-xs">Pro Tip</p>
                     <p class="font-body-md text-on-surface dark:text-[#dae2fd] leading-relaxed">
-                        Articles published on Tuesdays at 9:00 AM receive 40% more engagement in the "Paper &amp; Ink"
+                        Articles published on Tuesdays at 9:00 AM receive 40% more engagement in the "Inkode"
                         ecosystem.
                     </p>
                 </div>
             </div>
+            @session('success')
+                <div class="max-w-3xl mx-auto mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                    {{ session('message') }}
+                </div>
+                
+            @endsession
             <!-- Content Tabs & Filters -->
             <div class="mb-lg">
                 <div
@@ -350,7 +350,7 @@
                             <h3
                                 class="font-headline-md text-headline-md text-on-surface dark:text-white leading-snug group-hover:text-primary dark:group-hover:text-[#c0c1ff] transition-colors cursor-pointer">
                                {{$post->title}}</h3>
-                            <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] mt-xs">Published on {{$post->created_at->format('M j, Y')}}</p>
+                            <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] mt-xs">Published on {{$post->published_at?->format('M j, Y')??'Not published yet'}}</p>
                         </div>
                         <div class="md:col-span-3 flex gap-lg">
                             <div class="flex flex-col">
@@ -362,7 +362,7 @@
                                             class="material-symbols-outlined text-base">visibility</span> {{Illuminate\Support\Number::abbreviate($post->views) }}</span>
                                     <span
                                         class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm"><span
-                                            class="material-symbols-outlined text-base">forum</span> 84</span>
+                                            class="material-symbols-outlined text-base">forum</span> {{$post->comments_count}}</span>
                                 </div>
                             </div>
                         </div>
@@ -372,6 +372,7 @@
                                 <span class="w-2 h-2 bg-primary dark:bg-[#c0c1ff] rounded-full"></span>
                                 {{$post->status}}
                             </span>
+                          
                             <td class="px-md py-4 text-right">
                                     <div class="flex justify-end gap-2">
                                         <a href="{{route('dashboard.posts.edit',[$post->id])}}"
@@ -401,7 +402,12 @@
                 </div>
                 
                 @endforelse
+                <div class="mt-lg">
+
+                {{$posts->links()}}
+                </div>
                 {{-- <!-- Post Row 2 -->
+            
                 <div
                     class="group flex items-center gap-md p-md glass-card rounded-xl hover:border-primary/50 dark:hover:border-[#c0c1ff]/50 transition-all duration-300">
                     <input checked=""
@@ -496,28 +502,7 @@
                     </div>
                 </div> --}}
             </div>
-            <!-- Pagination -->
-            <div class="mt-xl flex flex-col sm:flex-row justify-between items-center gap-lg py-lg">
-                <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7]">Showing 1 to 10 of 42 posts</p>
-                <div class="flex items-center gap-xs">
-                    <button
-                        class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 dark:border-white/10 hover:bg-surface-variant dark:hover:bg-[#131b2e] transition-colors text-on-surface-variant dark:text-[#c7c4d7]">
-                        <span class="material-symbols-outlined text-sm">chevron_left</span>
-                    </button>
-                    <button
-                        class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary dark:bg-[#c0c1ff] text-on-primary dark:text-[#07006c] font-bold">1</button>
-                    <button
-                        class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 dark:border-white/10 hover:bg-surface-variant dark:hover:bg-[#131b2e] transition-colors font-body-md text-on-surface dark:text-[#dae2fd]">2</button>
-                    <button
-                        class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 dark:border-white/10 hover:bg-surface-variant dark:hover:bg-[#131b2e] transition-colors font-body-md text-on-surface dark:text-[#dae2fd]">3</button>
-                    <button
-                        class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 dark:border-white/10 hover:bg-surface-variant dark:hover:bg-[#131b2e] transition-colors font-body-md text-on-surface dark:text-[#dae2fd]">...</button>
-                    <button
-                        class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 dark:border-white/10 hover:bg-surface-variant dark:hover:bg-[#131b2e] transition-colors text-on-surface-variant dark:text-[#c7c4d7]">
-                        <span class="material-symbols-outlined text-sm">chevron_right</span>
-                    </button>
-                </div>
-            </div>
+          
         </main>
     </div>
    
