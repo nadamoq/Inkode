@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Observers\CategoryObserver;
+use App\Observers\PostObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Category::observe(CategoryObserver::class);
+        Post::observe(PostObserver::class);
      
     }
 }

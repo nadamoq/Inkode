@@ -15,6 +15,7 @@ return new class extends Migration
             //
             $table->timestamp('published_at')->nullable()->after('content');
             $table->json('metadata')->nullable()->after('published_at');
+            $table->softDeletes();
             $table->index('published_at');
             
         });

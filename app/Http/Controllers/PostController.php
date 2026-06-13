@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\FileUpload;
 use App\Actions\SyncPostTags;
+use App\Events\PostViewed;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+
 use Throwable;
 
 class PostController extends Controller
@@ -43,10 +44,26 @@ class PostController extends Controller
 
         if ($status && in_array($status, ['published', 'draft', 'archived'])) {
 
-            $posts->where('status', $status)->with('category');
+            $posts->where('status', $status);
         }
 
-        $posts = $posts->select('id', 'title', 'excerpt', 'content', 'status', 'category_id', 'image', 'published_at', 'views')->withCount('comments')->latest()->paginate(5);
+        $posts = $posts->withTrashed()
+                ->with('category')
+                ->select(
+                    'id',
+                    'title',
+                    'slug',
+                    'excerpt',
+                    'content',
+                    'status',
+                    'category_id',
+                    'image',
+                    'published_at',
+                    'views',
+                    'deleted_at'
+                )->withCount('comments')
+                ->latest()
+                ->paginate(5);
 
         return view('dashboard.post.index', ['posts' => $posts, 'status_options' => $status_options, 'status' => $status]);
     }
@@ -74,9 +91,6 @@ class PostController extends Controller
         try {
 
             $data = array_merge([
-                'user_id' => auth()->id(),
-                'slug' => Str::slug($request->post('title')),
-                'status' => 'published',
                 'image' => $file->handle('cover_image', 'posts', 'public') ?? null,
                 'published_at' => now(),
             ], $clean);
@@ -97,18 +111,21 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(String $slug)
     {
-        //
-        return view('dashboard.post.show', compact('post'));
+        $post = Post::published()->slug($slug)->firstOrFail();
+
+        PostViewed::dispatch($post);
+
+        return view('blog.posts.show', compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(string $slug)
     {
-        //
+        $post = Post::slug($slug)->firstOrFail();
         $categories = Category::all();
         $allTags = Tag::pluck('name')->toArray();
         $existingTags = $post->tags()->pluck('name')->toArray();
@@ -118,13 +135,14 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, FileUpload $file, Post $post)
+    public function update(UpdatePostRequest $request, FileUpload $file, string $slug)
     {
+        $post = Post::slug($slug)->firstOrFail();
         //
         $clean = $request->validated();
         $data = array_merge([
-            'user_id' => 1,
-            'slug' => Str::slug($request->post('title')),
+            'user_id' => auth()->id,
+           
             'image' => $file->handle('cover_image', 'posts', 'public') ?? null,
         ], $clean);
 
@@ -152,14 +170,31 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
-        $post = Post::findOrFail($id);
         $result = $post->delete();
-        if ($result && $post->image) {
-            Storage::disk('public')->delete($post->image);
-        }
-        return redirect()->route('dashboard.posts.index')->with(['success' => true, 'message' => 'Post deleted successfully']);
+
+        return redirect()->route('dashboard.posts.index')->with(['success' => $result, 'message' => 'Post deleted successfully']);
+    }
+    public function restore(string $slug)
+    {
+        $post = Post::onlyTrashed()->slug($slug)->firstOrFail();
+        $post->restore();
+
+        // PRG: POST Redirect GET
+        return redirect()->route('dashboard.posts.index')
+            ->with('status', 'Post restored!');
+    }
+    public function forceDelete(string $slug)
+    {
+        $post = Post::onlyTrashed()->slug($slug)->firstOrFail();
+
+        $post->forceDelete();
+
+       
+
+        // PRG: POST Redirect GET
+        return redirect()->route('dashboard.posts.index')
+            ->with('status', 'Post permanently deleted!');
     }
 }

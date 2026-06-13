@@ -154,7 +154,7 @@
                         "primary-fixed": "#e1e0ff",
                         "on-surface-variant": {
                             DEFAULT: "#c7c4d7",
-                            light: "#2d3133" // Darkened from 464554 for accessibility
+                            light: "#2d3133" 
                         },
                         "secondary": "#89ceff",
                         "secondary-fixed": "#c9e6ff",
@@ -319,11 +319,19 @@
                     href="{{ route('dashboard.posts.create') }}">
                     Create Post
                 </a>
+                @auth
                 <div
                     class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant-light dark:border-outline-variant">
                     <img alt="User profile"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlFAp98Zvo2XeTwbwRR-Pm6JzUr3JZEZ689tkUZMQTGTIe2hssjJwGnojI2GdXpLLFGOtWx5ymRYzy0uhR7HOqeRh7e55BaaVe9xqgjCciCdhVEmuuPeqdU6sbqags-XvXaoqyJ2GuEdeuAUCEN69sBH5h49Bg8SNbdjZ9ezwgYufct_TeCaXWe997IqeVL_Xxzbl6FXt9HG89h83NDzmu4Ww7lpJaWbda-xseoQNUN6-gfxvwd04UzgxdQ5_3MU1KpZNKzNYOrLs" />
-                </div>
+                        src="{{Auth::user()?->avatar}}" />
+                     </div>
+                     <button onclick="document.getElementById('logout').submit()"> logout </button>
+                    <form action="{{route('logout')}}" method="POST" style="hidden" id="logout">@csrf</form>
+               
+                @else
+                 
+                     <a href="{{route('login')}}"> <p>login</p></a>
+                @endauth
             </div>
         </div>
     </header>

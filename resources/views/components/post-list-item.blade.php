@@ -2,7 +2,7 @@
     class="glass-card p-md rounded-xl flex gap-md items-start group hover:border-primary/50 transition-colors duration-300">
     <div class="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden flex-shrink-0">
         <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            src="{{ Storage::url($post->image) ?? asset('assets/images/logo.png') }}" />
+            src="{{ $post->thumbnailUrl }}" alt="{{ $post->title }}" />
     </div>
     <div class="flex-grow">
         <div class="flex gap-xs mb-xs">
@@ -13,7 +13,8 @@
         </div>
         <h4
             class="font-display text-body-lg font-bold text-on-surface-light dark:text-on-surface mb-sm group-hover:text-primary transition-colors">
-            {{ $post->title }}</h4>
+           <a href="{{ route('posts.show', $post->slug) }}" class="hover:underline">{{ $post->title }}</a>
+        </h4>
         <p class="text-on-surface-variant-light dark:text-on-surface-variant text-body-md line-clamp-2 hidden md:block">
             {{ $post->description }}
         </p>

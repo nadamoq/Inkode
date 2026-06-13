@@ -5,56 +5,59 @@
         <div class="col-span-12 lg:col-span-8 space-y-xl">
             <!-- Featured Article -->
             <section class="group relative">
-                <div class="featured-border rounded-xl overflow-hidden glass-card transition-all duration-300">
-                    <div class="flex flex-col md:flex-row h-full">
-                        <div class="md:w-1/2 overflow-hidden h-[300px] md:h-auto">
-                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2maiNjILuRJtzIQy13dS1nyL2146jpfpSrkqQay7qC-NMFMRybT6CCGcvDfmEYzQp-Ew4aoPKayaYGBCjzPIvaaL88p86zM9Lhfq6qGo6jN3P7MuWZRi6pIvyM9C_2rfV6UbtGtdBS1F8dPO30ooZ3GmPg6htHBqy0HdupwuUsN94OSEMJhkrllc9jmxhO_vOL8QFLudPXmGIugk6KRWi3sdK4PJAMCoREWzPqXw1ekXUxaKyFCYsRJjl-SXs8XA2REeLGX16EMI" />
-                        </div>
-                        <div class="md:w-1/2 p-lg flex flex-col justify-center">
-                            <div class="flex gap-xs mb-sm">
-                                <span
-                                    class="bg-primary/10 px-xs py-1 rounded-full text-label-caps font-label-caps text-on-primary-fixed-variant">
-                                     #{{$post->tags->first()->name}}</span>
-                                <span
-                                    class="dark:text-on-surface-variant text-label-caps font-label-caps text-on-surface-light">12
-                                    MIN READ</span>
+                <a href="{{ route('posts.show', $post->slug) }}">
+                    <div class="featured-border rounded-xl overflow-hidden glass-card transition-all duration-300">
+                        <div class="flex flex-col md:flex-row h-full">
+                            <div class="md:w-1/2 overflow-hidden h-[300px] md:h-auto">
+                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    src="{{ $post->thumbnailUrl }}" alt="{{ $post->title }}" />
                             </div>
-                            <h2
-                                class="font-display text-headline-lg text-on-surface-light dark:text-on-surface mb-md group-hover:text-primary transition-colors">
-                                {{$post->title}}</h2>
-                            <p
-                                class="text-on-surface-variant-light dark:text-on-surface-variant font-body-md mb-lg line-clamp-3">
-                               {{$post->excerpt}}
-                            </p>
-                            <div class="flex items-center gap-sm">
-                                <img class="w-10 h-10 rounded-full object-cover border border-outline-variant-light dark:border-outline-variant"
-                                    src="{{ ($post->author ->image )?Storage::url($post->author->image) : asset('assets/images/DefaultUser.png') }}" />
-                                <div>
-                                    <p
-                                        class="font-display font-bold text-on-surface-light dark:text-on-surface text-body-md">
-                                        {{$post->author->name}}</p>
-                                    <p
-                                        class="text-on-surface-variant-light dark:text-on-surface-variant text-label-caps font-label-caps">
-                                        PRINCIPAL ARCHITECT</p>
+                            <div class="md:w-1/2 p-lg flex flex-col justify-center">
+                                <div class="flex gap-xs mb-sm">
+                                    <span
+                                        class="bg-primary/10 px-xs py-1 rounded-full text-label-caps font-label-caps text-on-primary-fixed-variant">
+                                        #{{ $post->tags->first()->name }}</span>
+                                    <span
+                                        class="dark:text-on-surface-variant text-label-caps font-label-caps text-on-surface-light">12
+                                        MIN READ</span>
+                                </div>
+                                <h2
+                                    class="font-display text-headline-lg text-on-surface-light dark:text-on-surface mb-md group-hover:text-primary transition-colors">
+                                    {{ $post->title }}</h2>
+                                <p
+                                    class="text-on-surface-variant-light dark:text-on-surface-variant font-body-md mb-lg line-clamp-3">
+                                    {{ $post->excerpt }}
+                                </p>
+                                <div class="flex items-center gap-sm">
+                                    <img class="w-10 h-10 rounded-full object-cover border border-outline-variant-light dark:border-outline-variant"
+                                        src="{{ $post->author->avatar }}" />
+                                    <div>
+                                        <p
+                                            class="font-display font-bold text-on-surface-light dark:text-on-surface text-body-md">
+                                            {{ $post->author->name }}</p>
+                                        <p
+                                            class="text-on-surface-variant-light dark:text-on-surface-variant text-label-caps font-label-caps">
+                                            PRINCIPAL ARCHITECT</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </section>
             <section class="py-md">
                 <h3 class="font-display text-label-caps dark:text-outline mb-sm text-on-surface-variant-light">
                     POPULAR TOPICS</h3>
-                
-                    <div class="flex gap-sm overflow-x-auto pb-2 scrollbar-hide no-scrollbar">
-                        @foreach ($tags as $tag)
+
+                <div class="flex gap-sm overflow-x-auto pb-2 scrollbar-hide no-scrollbar">
+                    @foreach ($tags as $tag)
                         <a class="whitespace-nowrap px-md py-2 rounded-full bg-white dark:bg-surface-container-high border border-outline-light/40 dark:border-outline-variant/30 text-on-surface-light font-medium dark:text-on-surface hover:border-primary transition-colors text-body-md"
                             href="#">#{{ $tag->name }}</a>
-                        @endforeach
-                        
-                    </div>
+                    @endforeach
+
+                </div>
             </section>
+
             <section class="space-y-md">
                 <div
                     class="flex justify-between items-end border-b border-outline-variant-light dark:border-outline-variant/10 pb-md">
@@ -183,7 +186,7 @@
             </section>
             <!-- Pagination -->
             <div class="flex justify-center mt-lg">
-                {{ $posts->links() }}
+                {{ $posts->withQueryString()->links() }}
             </div>
         </div>
         <!-- Sidebar -->
@@ -195,7 +198,7 @@
             <!-- Live Activity -->
             <x-live-activity title="Live Activity" />
             <!-- Top Minds -->
-            <x-recommended-authors title="Top Authors" />
+            <x-recommended-authors title="Top Authors" count=4 />
         </aside>
     </div>
 </x-layouts.front>

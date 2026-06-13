@@ -26,5 +26,8 @@ class CategoryObserver
            
         }
     }
+    public function deleted(Category $category){
+        $category->posts()->delete();
+    }
 
 }

@@ -6,7 +6,7 @@ namespace App\Models;
 
 
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Casts\Attribute ;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,12 +27,11 @@ class User extends Authenticatable
         'email',
         'password',
         'username',
-        
         'timezone',
         'active',
         'avatar',
         'country_code',
-        
+
 
     ];
 
@@ -58,22 +57,27 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function posts() {
+    public function posts()
+    {
 
-        return $this->hasMany(Post::class); 
+        return $this->hasMany(Post::class);
     }
-    public function avatar():Attribute{
-        return new Attribute(
-            get:function(){
-                $this->image ? Storage::disk('public')->url($this->image):asset('assets/images/DefaultUser.png');
-
-            });
-    }
-    public function thumbnailUrl():Attribute{
+    public function avatar(): Attribute
+    {
         return new Attribute(
             get: function () {
-                $this->image ? Storage::disk('public')->url($this->image): asset('assets/images/logo.png');
+                return  $this->image ? Storage::disk('public')->url($this->image) : asset('assets/images/DefaultUser.png');
             }
         );
+    }
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id')
+            ->withPivot(['id', 'created_at']);
+    }
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')
+            ->withPivot(['id', 'created_at']);
     }
 }

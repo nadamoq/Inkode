@@ -376,6 +376,28 @@
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @endforeach
             @enderror
+            <section>
+                    <h3 class="font-ui-label text-ui-label text-on-surface mb-4 uppercase tracking-wider">Publish Time
+                    </h3>
+                    <div class="relative datetime-input-wrapper text-on-surface">
+                        <input name="published_at" value="{{ old('published_at', $post->published_at) }}"
+                            class="datetime-input w-full bg-surface-container-low text-on-surface border border-outline rounded-lg px-4 py-2 font-metadata text-metadata placeholder:text-on-surface-variant focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                            placeholder="Add tag..." type="datetime-local" />
+
+                        <svg aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 10h5v5H7z" fill="none"/>
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H5V9h14v9z"/>
+                        </svg>
+                    </div>
+
+                    @push('style')
+                        <style>
+                            .datetime-input { padding-right: 3rem; }
+                        </style>
+                    @endpush
+            </section>
+           
+            
             <!-- Tags Management -->
             <section>
                 <h3 class="font-label-caps text-label-caps text-on-surface font-bold mb-4 uppercase">Tags</h3>
@@ -482,6 +504,7 @@
                         <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
                     @enderror
                     <!-- Main  Editor -->
+                    <label for="excerpt">Post's Excerpt </label>
                     <textarea name="excerpt"
                         class="w-full bg-transparent border-none focus:ring-0 font-headline-lg text-headline-lg resize-none placeholder:text-outline text-on-surface mb-12 overflow-hidden"
                         oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
@@ -524,7 +547,40 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" style="float: right;"
+                 <section>
+                    <div class=" m-4">
+                <h3 class="font-label-caps text-label-caps text-on-surface font-bold mb-4 uppercase">
+                    Meta Data
+                </h3>
+                    </div>
+                <input name="meta[title]" id="meta_title"
+                    class="w-full bg-surface-container-low border border-outline font-body-md text-on-surface rounded-lg px-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant mt-4"
+                    placeholder="Meta title for SEO..." type="text" value="{{ old('meta.title') ?? ($post->metadata['meta_title'] ?? '') }}" />
+                @error('meta.title')
+                    {{$message}}
+                @enderror
+                <input name="meta[description]" id="meta_description"
+                    class="w-full bg-surface-container-low border border-outline font-body-md text-on-surface rounded-lg px-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant mt-4"
+                    placeholder="Meta description for SEO..." type="text" value="{{ old('meta.description') ?? ($post->metadata['meta_description'] ?? '') }}" />
+                @error('meta.description')
+                    {{$message}}
+                @enderror
+                <input name="meta[keywords]" id="meta_keywords"
+                    class="w-full bg-surface-container-low border border-outline font-body-md text-on-surface rounded-lg px-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant mt-4"
+                    placeholder="Meta keywords for SEO..." type="text" value="{{ old('meta.keywords') ?? ($post->metadata['meta_keywords'] ?? '') }}" />
+                @error('meta.keywords')
+                    {{$message}}
+                @enderror
+                   
+                    <input type="text" class="w-full bg-surface-container-low border border-outline font-body-md text-on-surface rounded-lg px-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant mt-4"
+                    placeholder="Meta Url for SEO..." name="meta[url]" value="{{ old('meta.url', $post->meta['url'] ?? '') }}">
+                    @error('meta.url')
+                    <p class="text-red-800">{{ $message }}</p>
+                    @enderror
+               
+            </section>
+
+                <button type="submit" style="float: right;margin-top: 20px;"
                     class=" bg-primary text-on-primary px-6 py-3 rounded-lg font-ui-label text-ui-label hover:bg-primary-hover transition-colors">
                     Publish
                 </button>
@@ -564,7 +620,23 @@
                 const toolbar = 'undo redo | tinymceai-chat tinymceai-quickactions tinymceai-review | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat';
 
                 let editorInstance = null;
-                let currentIsDark = document.documentElement.classList.contains('dark');
+
+                function determineIsDark() {
+                    // Prefer an explicit saved theme, otherwise prefer page class, otherwise system preference
+                    try {
+                        const saved = localStorage.getItem('theme');
+                        if (saved === 'dark') return true;
+                        if (saved === 'light') return false;
+                    } catch (e) {
+                        // ignore localStorage errors
+                    }
+
+                    if (document.documentElement.classList.contains('dark')) return true;
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return true;
+                    return false;
+                }
+
+                let currentIsDark = determineIsDark();
 
                 function getConfig(isDark) {
                     return {
@@ -597,8 +669,17 @@
                     await tinymce.init(getConfig(isDark));
                 }
 
-                // initialize
-                initEditor(currentIsDark);
+                // initialize after DOM/theme scripts run so we pick up the correct initial theme
+                function initWhenReady() {
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', () => initEditor(determineIsDark()));
+                    } else {
+                        // allow any synchronous theme toggles to happen first
+                        requestAnimationFrame(() => setTimeout(() => initEditor(determineIsDark()), 50));
+                    }
+                }
+
+                initWhenReady();
 
                 // watch for theme (dark class on <html>) changes and re-init editor when changed
                 const observer = new MutationObserver(mutations => {

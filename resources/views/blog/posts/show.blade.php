@@ -139,7 +139,7 @@
 
             .code-font {
                 font-family: 'JetBrains Mono', monospace;
-                
+
             }
 
             /* Light mode color overrides to match SCREEN_110 */
@@ -254,9 +254,8 @@
             .light .text-on-surface\/90,
             .light .text-on-surface\/80 {
                 color: #666666 !important;
-            } 
+            }
         </style>
-        
     @endpush
 
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
@@ -276,7 +275,7 @@
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
                         <span class="material-symbols-outlined">chat_bubble</span>
                     </button>
-                    <span class="text-xs font-semibold text-secondary">{{$post->comments->count()}}</span>
+                    <span class="text-xs font-semibold text-secondary">{{ $post->comments->count() }}</span>
                 </div>
                 <div class="w-8 h-px bg-outline-variant"></div>
                 <button
@@ -293,60 +292,55 @@
         <article class="flex-1 article-max-width mx-auto lg:mx-0">
             <header class="mb-12">
                 <nav class="flex items-center gap-2 mb-6 text-sm font-medium text-primary">
-                    <span><a href="{{route('dashboard.posts.index')}}">Posts</a></span>
+                    <span><a href="{{ route('dashboard.posts.index') }}">Posts</a></span>
                     <span class="material-symbols-outlined text-xs">chevron_right</span>
-                    <span>{{$post->category->name}}</span>
+                    <span>{{ $post->category->name }}</span>
                 </nav>
                 <h1 class="geist-font text-headline-lg md:text-display font-extrabold text-on-surface leading-tight mb-8 "
                     style="margin-top: 50px">
-                   {{$post->title}}
+                    {{ $post->title }}
                 </h1>
+                <p>{{ $post->views }} Views</p>
                 <!-- Author Block (Repositioned for Inkode) -->
                 <div
                     class="lg:hidden flex items-center justify-between mb-8 p-4 bg-surface-container rounded-xl border border-outline-variant transition-colors">
+                     <form method="post" action="{{route('follow',$post->author->id)}}">
+                            @csrf
                     <div class="flex items-center gap-4">
                         <img class="w-10 h-10 rounded-full grayscale border border-outline"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrB-fTH_sGc-EoJs3tiJjk17n12cNKJM223VhyTD5FfEtDknySO7GKIj0HvaJ3d-MoqtVOP8Yfk-dObjmX9mmt7mFiMRgqqpHWCsYFFpmpKBTaBXmgoB4M75gSnf4MJhP1WCx3DUb1E9iLnP1S039Q9dKb0JB_82yuO9S-WADZqyUPUVc_7lpe6Od7eVj2dcesczICWUxGQu7qeDZM0cH-Zqb8erGsQU-AEaICg0K2DynpHlKKOtRY0rPe9qhTIpUEN05vqmFz9_FG" />
                         <div>
-                            <p class="font-bold text-on-surface">{{$post->author->name}}</p>
-                            <p class="text-xs text-on-surface-variant">Oct 24, 2024 · 12 min read</p>
+                            <p class="font-bold text-on-surface">{{ $post->author->name }}</p>
+                            <p class="text-xs text-on-surface-variant">{{ $post->published_at->format('M j, Y') }} · 12
+                                min read</p>
                         </div>
                     </div>
-                    <button
+                    <button type="submit"
                         class="bg-secondary text-on-secondary px-4 py-1.5 rounded-full text-xs font-bold">Follow</button>
+                       
+                        </form>
                 </div>
             </header>
             <!-- Article Body -->
             <div class="space-y-8">
                 <p class="text-body-lg text-on-surface/90 leading-relaxed">
-                    In an era defined by the constant hum of notification-driven anxiety, the true luxury of the
-                    modern interface is not feature density, but intentional absence. We have spent decades filling
-                    every pixel with utility, forgetting that the primary purpose of reading is a solitary, quiet
-                    dialogue between the ink and the mind.
+                    {{ $post->excerpt }}
                 </p>
-                <h2 class="geist-font text-headline-md mt-12 mb-4 text-on-surface tracking-tight">The Psychology of
-                    White Space</h2>
-                <p class="text-body-md text-on-surface/80">
-                    When we strip away the secondary sidebars, the flashing banners, and the sticky social widgets,
-                    we allow the reader's cognitive load to reset. This isn't just a stylistic choice; it's a
-                    neurological necessity for deep comprehension. The grid must breathe.
-                </p>
+
+
                 <figure class="my-12">
                     <div class="relative overflow-hidden rounded-2xl border border-outline-variant group">
                         <img class="w-full grayscale hover:grayscale-0 transition-all duration-700"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe9z5-CMxvCeCQThs7kHzXQ5geJGBesnpuQA7xMHfACS22Pxtkz4R7KK9r2bvlMMQw0dcote6RP0On5Tfiu4fPCTiAUZD7FMlSMV5mGUEbKYzWeebVMGq3fVli3vncJYSUj8lHI5od9K87xxH50MrEwLkFtOqVf7isIQFSMFZNyPWjKcLqU9cy4ueAsQnu3Q-sn7a3GaYWe-h3MpWxNwyaLxKSk3xhfxcVEi_H6xbFghZghxTOkCJnEq6APCaOSL0cc2jtB8-DzQ59" />
+                            src="{{ $post->thumbnailUrl }}" />
                         <div class="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent"></div>
                     </div>
                     <figcaption
                         class="mt-4 px-4 py-3 bg-surface-container-low border-l-2 border-primary rounded-r-lg transition-colors">
-                        <span
-                            class="code-font text-xs font-bold text-primary uppercase tracking-widest block mb-1">Figure
-                            1.1</span>
-                        <p class="text-xs text-secondary italic">The visual representation of cognitive breathing
-                            room in physical architecture.</p>
+
+                        <p class="text-xs text-secondary italic">Figure : {{ $post->title }}.</p>
                     </figcaption>
                 </figure>
-                <blockquote
+                {{-- <blockquote
                     class="relative py-8 px-10 my-12 bg-surface-container-highest/30 rounded-2xl border border-outline-variant overflow-hidden transition-colors">
                     <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
                     <span
@@ -366,9 +360,9 @@
                     limits of the human eye, ensuring that the transition from the end of one line to the beginning
                     of the next remains fluid and effortless. Any wider, and the brain begins to work too hard just
                     to track the sequence.
-                </p>
+                </p> --}}
                 <!-- Key Takeaways (Inkode Tech Card style) -->
-                <div
+                {{-- <div
                     class="p-8 bg-surface-container border border-outline-variant rounded-2xl my-16 shadow-2xl shadow-primary/5 transition-colors">
                     <div class="flex items-center gap-3 mb-6">
                         <span class="material-symbols-outlined text-primary">terminal</span>
@@ -391,7 +385,8 @@
                                 digital accent (e.g., Electric Violet).</p>
                         </li>
                     </ul>
-                </div>
+                </div> --}}
+                {!! $post->content !!}
             </div>
         </article>
         <!-- Right Sidebar: Author Metadata (Sticky) -->
@@ -401,7 +396,7 @@
                     <div class="flex flex-col items-center text-center">
                         <img class="w-20 h-20 rounded-full grayscale border-2 border-primary mb-4"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrB-fTH_sGc-EoJs3tiJjk17n12cNKJM223VhyTD5FfEtDknySO7GKIj0HvaJ3d-MoqtVOP8Yfk-dObjmX9mmt7mFiMRgqqpHWCsYFFpmpKBTaBXmgoB4M75gSnf4MJhP1WCx3DUb1E9iLnP1S039Q9dKb0JB_82yuO9S-WADZqyUPUVc_7lpe6Od7eVj2dcesczICWUxGQu7qeDZM0cH-Zqb8erGsQU-AEaICg0K2DynpHlKKOtRY0rPe9qhTIpUEN05vqmFz9_FG" />
-                        <h3 class="geist-font font-bold text-xl text-on-surface">Julian Thorne</h3>
+                        <h3 class="geist-font font-bold text-xl text-on-surface">{{ $post->author->name }}</h3>
                         <p class="text-sm text-secondary mb-6">Interface Philosopher &amp; Architect</p>
                         <button
                             class="w-full bg-primary text-on-primary font-bold py-2.5 rounded-lg transition-all hover:opacity-90 active:scale-95 mb-4">Follow</button>
@@ -419,20 +414,20 @@
                         </div>
                     </div>
                 </div>
-                @if($post->author->posts->where('id', '!=', $post->id)->count() > 0)
-                    <div class="p-6 bg-surface-container-low rounded-2xl border border-outline-variant transition-colors">
+                @if ($more->count() > 0)
+                    <div
+                        class="p-6 bg-surface-container-low rounded-2xl border border-outline-variant transition-colors">
                         <h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-4">More from
-                            Julian</h4>
+                            {{ $post->author->name }}</h4>
                         <div class="space-y-4">
-                            @foreach ($post->author->posts->where('id', '!=', $post->id)->take(2) as $item)
-                                
-                            
-                            <a class="block group" href="#">
-                                <p class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors mb-1">
-                                    {{ $item->title }}
-                                </p>S
-                                <p class="text-xs text-secondary">5 min read</p>
-                            </a>
+                            @foreach ($more->get() as $item)
+                                <a class="block group" href="#">
+                                    <p
+                                        class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors mb-1">
+                                        {{ $item->title }}
+                                    </p>
+                                    <p class="text-xs text-secondary">5 min read</p>
+                                </a>
                             @endforeach
                         </div>
                     </div>

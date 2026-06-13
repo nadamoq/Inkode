@@ -156,63 +156,11 @@
         }
     </script>
     <div class="flex max-w-container-max mx-auto">
-        <!-- SideNavBar -->
-        {{-- <aside
-            class="hidden lg:flex flex-col h-[calc(100vh-64px)] sticky top-16 p-md space-y-unit w-64 border-r border-outline-variant/30 dark:border-white/10 bg-surface dark:bg-[#131b2e]">
-            <div class="px-md py-lg">
-                <p class="text-[12px] font-bold text-primary dark:text-[#c0c1ff] tracking-wider uppercase mb-1">
-                    Categories</p>
-                <p class="text-sm text-on-surface-variant dark:text-[#c7c4d7]">Technical Streams</p>
-            </div>
-            <nav class="flex-1 space-y-1">
-                <a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] hover:text-on-surface dark:hover:text-white rounded-lg transition-all group"
-                    href="#">
-                    <span class="material-symbols-outlined">architecture</span>
-                    <span class="font-body-md">Architecture</span>
-                </a>
-                <a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] hover:text-on-surface dark:hover:text-white rounded-lg transition-all group"
-                    href="#">
-                    <span class="material-symbols-outlined">terminal</span>
-                    <span class="font-body-md">Rust</span>
-                </a>
-                <a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] hover:text-on-surface dark:hover:text-white rounded-lg transition-all group"
-                    href="#">
-                    <span class="material-symbols-outlined">psychology</span>
-                    <span class="font-body-md">AI/ML</span>
-                </a>
-                <a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] hover:text-on-surface dark:hover:text-white rounded-lg transition-all group"
-                    href="#">
-                    <span class="material-symbols-outlined">speed</span>
-                    <span class="font-body-md">Performance</span>
-                </a>
-                <a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] hover:text-on-surface dark:hover:text-white rounded-lg transition-all group"
-                    href="#">
-                    <span class="material-symbols-outlined">settings_input_component</span>
-                    <span class="font-body-md">Systems</span>
-                </a>
-            </nav>
-            <div class="pt-xl border-t border-outline-variant/30 dark:border-white/10 space-y-1">
-                <a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] hover:text-on-surface dark:hover:text-white rounded-lg transition-all"
-                    href="#">
-                    <span class="material-symbols-outlined">insights</span>
-                    <span class="font-body-md">Analytics</span>
-                </a>
-                <a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] hover:text-on-surface dark:hover:text-white rounded-lg transition-all"
-                    href="#">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span class="font-body-md">Settings</span>
-                </a>
-            </div>
-        </aside> --}}
-        <!-- Main Content Area -->
         <main class="flex-1 p-gutter min-h-screen dark:bg-[#0b1326]">
-            <!-- Header Section -->
-            
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-lg mb-xl">
                 <div>
                     <h1 class="font-headline-lg text-headline-lg text-on-surface dark:text-white mb-xs">Content Management</h1>
-                    <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7]">Manage your intellectual output,
-                        track performance, and schedule upcoming pieces.</p>
+                    <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7]">Manage your intellectual output, track performance, and schedule upcoming pieces.</p>
                 </div>
                 <a href="{{route('dashboard.posts.create')}}"
                     class="bg-primary dark:bg-[#c0c1ff] hover:bg-primary/90 dark:hover:bg-[#c0c1ff]/90 text-on-primary dark:text-[#07006c] font-bold px-lg py-3 rounded-lg flex items-center gap-sm transition-all shadow-lg active:scale-95">
@@ -220,340 +168,190 @@
                     Create Post
                 </a>
             </div>
-            <!-- Bento Grid Metrics -->
+
             <div class="grid grid-cols-1 md:grid-cols-12 gap-lg mb-xl">
                 <div class="md:col-span-4 glass-card p-lg rounded-xl flex flex-col justify-between h-48 group">
                     <div>
-                        <p
-                            class="text-[12px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase tracking-wider mb-sm">
-                            Total Reach</p>
+                        <p class="text-[12px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase tracking-wider mb-sm">Total Reach</p>
                         <div class="flex items-end gap-md">
-                            <span
-                                class="font-headline-lg text-headline-lg text-on-surface dark:text-white">124.8k</span>
+                            <span class="font-headline-lg text-headline-lg text-on-surface dark:text-white">124.8k</span>
                             <span class="text-primary dark:text-[#c0c1ff] font-bold mb-1">+12%</span>
                         </div>
                     </div>
                     <div class="w-full bg-surface-variant dark:bg-[#2d3449] h-2 rounded-full overflow-hidden">
-                        <div
-                            class="bg-primary dark:bg-[#c0c1ff] h-full w-[78%] transition-all duration-1000 group-hover:w-[85%]">
-                        </div>
+                        <div class="bg-primary dark:bg-[#c0c1ff] h-full w-[78%] transition-all duration-1000 group-hover:w-[85%]"></div>
                     </div>
                 </div>
+
                 <div class="md:col-span-4 glass-card p-lg rounded-xl flex flex-col justify-between h-48">
                     <div>
-                        <p
-                            class="text-[12px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase tracking-wider mb-sm">
-                            Active Readers</p>
+                        <p class="text-[12px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase tracking-wider mb-sm">Active Readers</p>
                         <div class="flex items-center gap-sm">
                             <span class="font-headline-lg text-headline-lg text-on-surface dark:text-white">3,402</span>
-                            <span
-                                class="flex items-center gap-1 text-error font-bold text-sm bg-error-container/20 dark:bg-error/10 px-2 py-0.5 rounded">
+                            <span class="flex items-center gap-1 text-error font-bold text-sm bg-error-container/20 dark:bg-error/10 px-2 py-0.5 rounded">
                                 <span class="w-1.5 h-1.5 bg-error rounded-full animate-pulse"></span>
                                 Live
                             </span>
                         </div>
                     </div>
                     <div class="flex -space-x-3 overflow-hidden">
-                        <img alt="Reader"
-                            class="inline-block h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33]"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDSCA2NCcYYG5pT9nbAgNuGXxnCj2ivChvqf2Fh2mp0k9BQl9TdJx1ouTSylCVswuWsV42IrDOnNPuEerQo_ayLn1mSGpBNeWmOqSXSBBAa2oFdGP93TH8zyThyPiX9-ZdBoxMmoFrKSwsxrEkV9FR_lvb4WGv5DL1bDhiB3dSnRcWhCDCHv_JAFQR5iwW2CWskZlQYLCc622NnczDw8264f6O78BgYwE3i1wwo79lp_jy5UpEvK2ZDLCETiC_QlNBpQNHmnR-sZ0" />
-                        <img alt="Reader"
-                            class="inline-block h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33]"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuANUXsQZxRE6FJHbszsbtjLz3V_FgpuMXZC2CK4UTxuJU0HnO8YjGKIm2RTImpR2wNb6nFfC3SmVbJis8ROUgMXAjW7dCLw7e4n0qvulupSoa0nzcZG5B0PIpsAeofZRS3ZbDyFv22wRnbW7bDyNx2mx-s99F-SjfdpTw8x2J6Tct2jvp4dAB65hm5zzLZ5cGWN_xJcA-uLzP2KCseWHx89RcIbFqRblvEV56962Y7sbURqg2THVgc-ZPvtNrmGOcKC3LLSCi_LhhI" />
-                        <img alt="Reader"
-                            class="inline-block h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33]"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUzmGaOWZYsC6dqhad6XmogfelYInsBGJ6MH-8msWLSDad_-CvJd8rvM9baVWEDtzjVmKMNHG6JrOCc2ZHQEI9RJ2cIezqSFyUEfzSR3lnIQY-f1ZnPTTtUSOAmI0v3eL_kBj2jyrUq1QkQ8UpNxJ--jndNIERavOcxfDlh15Ck0lSRYKHC2XO65CKJfqY5mqoCmYI-ThQ4oT8NDwRgrZW_0njtrghN9agaBKqLcXmbkMTVHMkUjX9wX-7RtmMbyUeOlL5cBecGHg" />
-                        <div
-                            class="flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33] bg-primary/20 dark:bg-[#c0c1ff]/20 text-primary dark:text-[#c0c1ff] text-xs font-bold">
-                            +42</div>
+                        <img alt="Reader" class="inline-block h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDSCA2NCcYYG5pT9nbAgNuGXxnCj2ivChvqf2Fh2mp0k9BQl9TdJx1ouTSylCVswuWsV42IrDOnNPuEerQo_ayLn1mSGpBNeWmOqSXSBBAa2oFdGP93TH8zyThyPiX9-ZdBoxMmoFrKSwsxrEkV9FR_lvb4WGv5DL1bDhiB3dSnRcWhCDCHv_JAFQR5iwW2CWskZlQYLCc622NnczDw8264f6O78BgYwE3i1wwo79lp_jy5UpEvK2ZDLCETiC_QlNBpQNHmnR-sZ0" />
+                        <img alt="Reader" class="inline-block h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANUXsQZxRE6FJHbszsbtjLz3V_FgpuMXZC2CK4UTxuJU0HnO8YjGKIm2RTImpR2wNb6nFfC3SmVbJis8ROUgMXAjW7dCLw7e4n0qvulupSoa0nzcZG5B0PIpsAeofZRS3ZbDyFv22wRnbW7bDyNx2mx-s99F-SjfdpTw8x2J6Tct2jvp4dAB65hm5zzLZ5cGWN_xJcA-uLzP2KCseWHx89RcIbFqRblvEV56962Y7sbURqg2THVgc-ZPvtNrmGOcKC3LLSCi_LhhI" />
+                        <img alt="Reader" class="inline-block h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUzmGaOWZYsC6dqhad6XmogfelYInsBGJ6MH-8msWLSDad_-CvJd8rvM9baVWEDtzjVmKMNHG6JrOCc2ZHQEI9RJ2cIezqSFyUEfzSR3lnIQY-f1ZnPTTtUSOAmI0v3eL_kBj2jyrUq1QkQ8UpNxJ--jndNIERavOcxfDlh15Ck0lSRYKHC2XO65CKJfqY5mqoCmYI-ThQ4oT8NDwRgrZW_0njtrghN9agaBKqLcXmbkMTVHMkUjX9wX-7RtmMbyUeOlL5cBecGHg" />
+                        <div class="flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-surface dark:ring-[#171f33] bg-primary/20 dark:bg-[#c0c1ff]/20 text-primary dark:text-[#c0c1ff] text-xs font-bold">+42</div>
                     </div>
                 </div>
-                <div
-                    class="md:col-span-4 bg-surface-variant dark:bg-[#222a3d] p-lg rounded-xl flex flex-col justify-center h-48 relative overflow-hidden border border-outline-variant/30 dark:border-white/10">
+
+                <div class="md:col-span-4 bg-surface-variant dark:bg-[#222a3d] p-lg rounded-xl flex flex-col justify-center h-48 relative overflow-hidden border border-outline-variant/30 dark:border-white/10">
                     <div class="absolute top-0 right-0 p-4 opacity-10">
-                        <span class="material-symbols-outlined text-on-surface dark:text-white"
-                            style="font-size: 80px;">lightbulb</span>
+                        <span class="material-symbols-outlined text-on-surface dark:text-white" style="font-size: 80px;">lightbulb</span>
                     </div>
                     <p class="text-[12px] font-bold text-primary dark:text-[#c0c1ff] uppercase mb-xs">Pro Tip</p>
                     <p class="font-body-md text-on-surface dark:text-[#dae2fd] leading-relaxed">
-                        Articles published on Tuesdays at 9:00 AM receive 40% more engagement in the "Inkode"
-                        ecosystem.
+                        Articles published on Tuesdays at 9:00 AM receive 40% more engagement in the "Inkode" ecosystem.
                     </p>
                 </div>
             </div>
+
             @session('success')
-                <div class="max-w-3xl mx-auto mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                <div class="max-w-3xl mx-auto mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded mb-6">
                     {{ session('message') }}
                 </div>
-                
             @endsession
-            <!-- Content Tabs & Filters -->
+
             <div class="mb-lg">
-                <div
-                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-outline-variant/30 dark:border-white/10 gap-md">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-outline-variant/30 dark:border-white/10 gap-md">
                     <div class="flex gap-lg overflow-x-auto pb-0">
                         @foreach ($status_options as $option)
- 
-                        <a  href='{{route('dashboard.posts.index',['status' =>strtolower($option['name'])])}}'
-                            class="@if (strtolower($option['name'])==strtolower($status)) font-bold text-primary border-b-2
-                            
-                        @endif  dark:text-[#c0c1ff]  dark:border-[#c0c1ff] pb-4 px-1 whitespace-nowrap">
-                            {{$option['name']}} ({{$option['count']}})</a>
-                            @endforeach
-                   
+                            <a href="{{route('dashboard.posts.index',['status' => strtolower($option['name'])])}}"
+                                class="@if (strtolower($option['name']) == strtolower($status)) font-bold text-primary border-b-2 border-primary dark:text-[#c0c1ff] dark:border-[#c0c1ff] @endif pb-4 px-1 whitespace-nowrap">
+                                {{$option['name']}} ({{$option['count']}})
+                            </a>
+                        @endforeach
                     </div>
                     <div class="flex items-center gap-md pb-4">
-                        <button
-                            class="p-2 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#131b2e] rounded-lg transition-colors">
+                        <button class="p-2 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#131b2e] rounded-lg transition-colors">
                             <span class="material-symbols-outlined">filter_list</span>
                         </button>
-                        <button
-                            class="p-2 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#131b2e] rounded-lg transition-colors">
+                        <button class="p-2 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#131b2e] rounded-lg transition-colors">
                             <span class="material-symbols-outlined">sort</span>
                         </button>
                     </div>
                 </div>
             </div>
-            <!-- Post List -->
+
             <div class="space-y-md">
-                <!-- Bulk Action Tool -->
-                <div
-                    class="flex items-center justify-between px-md py-2 bg-surface-variant dark:bg-[#131b2e] rounded-lg border border-outline-variant/30 dark:border-white/10">
+                <div class="flex items-center justify-between px-md py-2 bg-surface-variant dark:bg-[#131b2e] rounded-lg border border-outline-variant/30 dark:border-white/10">
                     <div class="flex items-center gap-md">
-                        <input
-                            class="w-4 h-4 rounded border-outline-variant dark:border-white/20 text-primary bg-surface dark:bg-[#171f33] focus:ring-primary"
-                            type="checkbox" />
+                        <input class="w-4 h-4 rounded border-outline-variant dark:border-white/20 text-primary bg-surface dark:bg-[#171f33] focus:ring-primary" type="checkbox" />
                         <span class="font-body-md text-on-surface-variant dark:text-[#c7c4d7]">2 posts selected</span>
                     </div>
                     <div class="flex gap-md">
-                        <button
-                            class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] hover:text-primary dark:hover:text-[#c0c1ff] transition-colors">Unpublish</button>
+                        <button class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] hover:text-primary dark:hover:text-[#c0c1ff] transition-colors">Unpublish</button>
                         <button class="font-body-md text-error hover:opacity-80 transition-colors">Delete</button>
                     </div>
                 </div>
-                <!-- Post Row 1 -->
-              
-                @forelse ($posts as $post)
-                <div
-                    class="group flex items-center gap-md p-md glass-card rounded-xl hover:border-primary/50 dark:hover:border-[#c0c1ff]/50 transition-all duration-300">
-                    <input
-                        class="w-4 h-4 rounded border-outline-variant dark:border-white/20 text-primary bg-surface dark:bg-[#171f33] focus:ring-primary"
-                        type="checkbox" />
-                    <div class="flex-1 grid grid-cols-1 md:grid-cols-12 items-center gap-md">
-                        <div class="md:col-span-7">
-                            <div class="flex items-center gap-sm mb-xs">
-                                <span
-                                    class="bg-primary/10 dark:bg-[#c0c1ff]/10 text-primary dark:text-[#c0c1ff] px-2 py-0.5 rounded text-[10px] font-bold uppercase">{{$post->category->name}}</span>
-                                <span class="text-on-surface-variant dark:text-[#c7c4d7] text-[11px]">• 8 min
-                                    read</span>
-                            </div>
-                            <h3
-                                class="font-headline-md text-headline-md text-on-surface dark:text-white leading-snug group-hover:text-primary dark:group-hover:text-[#c0c1ff] transition-colors cursor-pointer">
-                               {{$post->title}}</h3>
-                            <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] mt-xs">Published on {{$post->published_at?->format('M j, Y')??'Not published yet'}}</p>
-                        </div>
-                        <div class="md:col-span-3 flex gap-lg">
-                            <div class="flex flex-col">
-                                <span
-                                    class="text-[10px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase">Engagement</span>
-                                <div class="flex items-center gap-md mt-1">
-                                    <span
-                                        class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm"><span
-                                            class="material-symbols-outlined text-base">visibility</span> {{Illuminate\Support\Number::abbreviate($post->views) }}</span>
-                                    <span
-                                        class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm"><span
-                                            class="material-symbols-outlined text-base">forum</span> {{$post->comments_count}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:col-span-2 flex justify-end items-center gap-md">
-                            <span
-                                class="flex items-center gap-1.5 text-[12px] font-bold text-primary dark:text-[#c0c1ff] bg-primary/10 dark:bg-[#c0c1ff]/10 px-3 py-1 rounded-full">
-                                <span class="w-2 h-2 bg-primary dark:bg-[#c0c1ff] rounded-full"></span>
-                                {{$post->status}}
-                            </span>
-                          
-                            <td class="px-md py-4 text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <a href="{{route('dashboard.posts.edit',[$post->id])}}"
-                                            class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-[20px]">edit</a>
-                                            
-                                              <button
-                                                onclick="confirm('Are you sure you want to delete this post?')? document.getElementById('deletepost{{ $post->id }}').submit() : null;"
-                                                class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors text-[20px]"
-                                                title="More">
-                                                <span class="material-symbols-outlined" data-icon="delete">delete</span>
-                                            </button>
-                                            <form style="display: none;" id="deletepost{{ $post->id }}"
-                                                action="{{ route('dashboard.posts.destroy', $post->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
-                                    </div>
-                                </td>
-                        </div>
-                    </div>
-                </div>
-                
-                @empty
-                <div class="text-center py-20"> 
-                    <span class="material-symbols-outlined text-6xl text-on-surface dark:text-[#c7c4d7] mb-4">article</span>
-                    <p class="text-on-surface-variant dark:text-[#c7c4d7] text-lg">No posts found. Start by creating a new post!</p>
-                </div>
-                
-                @endforelse
-                <div class="mt-lg">
 
-                {{$posts->links()}}
-                </div>
-                {{-- <!-- Post Row 2 -->
-            
-                <div
-                    class="group flex items-center gap-md p-md glass-card rounded-xl hover:border-primary/50 dark:hover:border-[#c0c1ff]/50 transition-all duration-300">
-                    <input checked=""
-                        class="w-4 h-4 rounded border-outline-variant dark:border-white/20 text-primary bg-surface dark:bg-[#171f33] focus:ring-primary"
-                        type="checkbox" />
-                    <div class="flex-1 grid grid-cols-1 md:grid-cols-12 items-center gap-md">
-                        <div class="md:col-span-7">
-                            <div class="flex items-center gap-sm mb-xs">
-                                <span
-                                    class="bg-tertiary/10 dark:bg-tertiary/10 text-tertiary dark:text-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase">Critique</span>
-                                <span class="text-on-surface-variant dark:text-[#c7c4d7] text-[11px]">• 15 min
-                                    read</span>
+                @forelse ($posts as $post)
+                    <div class="group flex items-center gap-md p-md glass-card rounded-xl hover:border-primary/50 dark:hover:border-[#c0c1ff]/50 transition-all duration-300">
+                        <input class="w-4 h-4 rounded border-outline-variant dark:border-white/20 text-primary bg-surface dark:bg-[#171f33] focus:ring-primary" type="checkbox" />
+                        
+                        <div class="flex-1 grid grid-cols-1 md:grid-cols-12 items-center gap-md">
+                            <div class="md:col-span-7">
+                                <div class="flex items-center gap-sm mb-xs">
+                                    <span class="bg-primary/10 dark:bg-[#c0c1ff]/10 text-primary dark:text-[#c0c1ff] px-2 py-0.5 rounded text-[10px] font-bold uppercase">
+                                        {{$post->category->name}}
+                                    </span>
+                                    <span class="text-on-surface-variant dark:text-[#c7c4d7] text-[11px]">• 8 min read</span>
+                                </div>
+                                <h3 class="font-headline-md text-headline-md text-on-surface dark:text-white leading-snug group-hover:text-primary dark:group-hover:text-[#c0c1ff] transition-colors cursor-pointer">
+                                   <a href="{{ route('dashboard.posts.show', $post) }}" class="text-inherit no-underline">
+                                        {{$post->title}}
+                                    </a>
+                                </h3>
+                                <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] mt-xs">
+                                    Published on {{$post->published_at?->format('M j, Y') ?? 'Not published yet'}}
+                                </p>
                             </div>
-                            <h3
-                                class="font-headline-md text-headline-md text-on-surface dark:text-white leading-snug group-hover:text-primary dark:group-hover:text-[#c0c1ff] transition-colors cursor-pointer">
-                                Digital Skeuomorphism in a Flat World: A Retrospective</h3>
-                            <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] mt-xs">Published on Oct
-                                09, 2024</p>
-                        </div>
-                        <div class="md:col-span-3 flex gap-lg">
-                            <div class="flex flex-col">
-                                <span
-                                    class="text-[10px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase">Engagement</span>
-                                <div class="flex items-center gap-md mt-1">
-                                    <span
-                                        class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm"><span
-                                            class="material-symbols-outlined text-base">visibility</span> 8.1k</span>
-                                    <span
-                                        class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm"><span
-                                            class="material-symbols-outlined text-base">forum</span> 32</span>
+
+                            <div class="md:col-span-3 flex gap-lg">
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase">Engagement</span>
+                                    <div class="flex items-center gap-md mt-1">
+                                        <span class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm">
+                                            <span class="material-symbols-outlined text-base">visibility</span> 
+                                            {{ Illuminate\Support\Number::abbreviate($post->views) }}
+                                        </span>
+                                        <span class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm">
+                                            <span class="material-symbols-outlined text-base">forum</span> 
+                                            {{$post->comments_count}}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="md:col-span-2 flex justify-end items-center gap-md">
-                            <span
-                                class="flex items-center gap-1.5 text-[12px] font-bold text-primary dark:text-[#c0c1ff] bg-primary/10 dark:bg-[#c0c1ff]/10 px-3 py-1 rounded-full">
-                                <span class="w-2 h-2 bg-primary dark:bg-[#c0c1ff] rounded-full"></span>
-                                Published
-                            </span>
-                            <button
-                                class="p-2 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] rounded-full transition-colors">
-                                <span class="material-symbols-outlined">more_vert</span>
-                            </button>
+
+                            <div class="md:col-span-2 flex justify-end items-center gap-md">
+                                @if($post->trashed())
+                                    <span class="flex items-center gap-1.5 text-[12px] font-bold text-red-500 bg-red-50 dark:bg-red-950/30 px-3 py-1 rounded-full">
+                                        <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                        Deleted
+                                    </span>
+                                    
+                                    <div class="flex justify-end gap-2">
+                                        <button onclick="confirm('Are you sure you want to restore this post?') ? document.getElementById('restorepost{{ $post->id }}').submit() : null;"
+                                            class="p-2 text-on-surface-variant hover:text-primary rounded-lg transition-all" title="Restore">
+                                            <span class="material-symbols-outlined">refresh</span>
+                                        </button>
+                                        <form style="display: none;" id="restorepost{{ $post->id }}" action="{{ route('dashboard.posts.restore', $post->slug) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                        </form>
+
+                                        <button onclick="confirm('Are you sure you want to delete this post permanently?') ? document.getElementById('force-delete{{ $post->id }}').submit() : null;"
+                                            class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Force Delete">
+                                            <span class="material-symbols-outlined">delete_forever</span>
+                                        </button>
+                                        <form style="display: none;" id="force-delete{{ $post->id }}" action="{{ route('dashboard.posts.force-delete', $post->slug) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
+                                @else
+                                    <span class="flex items-center gap-1.5 text-[12px] font-bold {{ $post->status->setColor() }} px-3 py-1 rounded-full">
+                                        <span class="w-2 h-2 rounded-full bg-current"></span>
+                                        {{$post->status->value}}
+                                    </span>
+                              
+                                    <div class="flex justify-end gap-2">
+                                        <a href="{{route('dashboard.posts.edit',[$post->slug])}}"
+                                            class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-[20px]" title="Edit">edit</a>
+                                            
+                                        <button onclick="confirm('Are you sure you want to delete this post?') ? document.getElementById('deletepost{{ $post->id }}').submit() : null;"
+                                            class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors text-[20px]" title="Trash">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                        
+                                        <form style="display: none;" id="deletepost{{ $post->id }}" action="{{ route('dashboard.posts.destroy', $post->slug) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
+                                @endif
+                            </div>
+
                         </div>
                     </div>
+                @empty
+                    <div class="text-center py-20"> 
+                        <span class="material-symbols-outlined text-6xl text-on-surface-variant dark:text-[#c7c4d7] mb-4">article</span>
+                        <p class="text-on-surface-variant dark:text-[#c7c4d7] text-lg">No posts found. Start by creating a new post!</p>
+                    </div>
+                @endforelse
+
+                <div class="mt-lg">
+                    {{$posts->withQueryString()->links()}}
                 </div>
-                <!-- Post Row 3 -->
-                <div
-                    class="group flex items-center gap-md p-md glass-card rounded-xl hover:border-primary/50 dark:hover:border-[#c0c1ff]/50 transition-all duration-300">
-                    <input checked=""
-                        class="w-4 h-4 rounded border-outline-variant dark:border-white/20 text-primary bg-surface dark:bg-[#171f33] focus:ring-primary"
-                        type="checkbox" />
-                    <div class="flex-1 grid grid-cols-1 md:grid-cols-12 items-center gap-md">
-                        <div class="md:col-span-7">
-                            <div class="flex items-center gap-sm mb-xs">
-                                <span
-                                    class="bg-secondary/10 dark:bg-secondary/10 text-secondary dark:text-[#89ceff] px-2 py-0.5 rounded text-[10px] font-bold uppercase">Technical</span>
-                                <span class="text-on-surface-variant dark:text-[#c7c4d7] text-[11px]">• 22 min
-                                    read</span>
-                            </div>
-                            <h3
-                                class="font-headline-md text-headline-md text-on-surface dark:text-white leading-snug group-hover:text-primary dark:group-hover:text-[#c0c1ff] transition-colors cursor-pointer">
-                                Leveraging Rust for Distributed Ledger Systems</h3>
-                            <p class="font-body-md text-on-surface-variant dark:text-[#c7c4d7] mt-xs">Published on Sep
-                                28, 2024</p>
-                        </div>
-                        <div class="md:col-span-3 flex gap-lg">
-                            <div class="flex flex-col">
-                                <span
-                                    class="text-[10px] font-bold text-on-surface-variant dark:text-[#c7c4d7] uppercase">Engagement</span>
-                                <div class="flex items-center gap-md mt-1">
-                                    <span
-                                        class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm"><span
-                                            class="material-symbols-outlined text-base">visibility</span> 25.0k</span>
-                                    <span
-                                        class="flex items-center gap-1 font-mono text-on-surface dark:text-[#dae2fd] text-sm"><span
-                                            class="material-symbols-outlined text-base">forum</span> 210</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:col-span-2 flex justify-end items-center gap-md">
-                            <span
-                                class="flex items-center gap-1.5 text-[12px] font-bold text-primary dark:text-[#c0c1ff] bg-primary/10 dark:bg-[#c0c1ff]/10 px-3 py-1 rounded-full">
-                                <span class="w-2 h-2 bg-primary dark:bg-[#c0c1ff] rounded-full"></span>
-                                Published
-                            </span>
-                            <button
-                                class="p-2 text-on-surface-variant dark:text-[#c7c4d7] hover:bg-surface-variant dark:hover:bg-[#222a3d] rounded-full transition-colors">
-                                <span class="material-symbols-outlined">more_vert</span>
-                            </button>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
-          
         </main>
     </div>
-   
-    @push('script')
-
-    <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('theme-icon');
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                icon.innerText = 'dark_mode';
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.add('dark');
-                html.classList.remove('light');
-                icon.innerText = 'light_mode';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Set initial theme based on preference or system
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            const icon = document.getElementById('theme-icon');
-
-            // Respect saved preference, otherwise default to system or light
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.documentElement.classList.remove('light');
-                icon.innerText = 'light_mode';
-            } else {
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-                icon.innerText = 'dark_mode';
-            }
-
-            // Entrance animation logic
-            const cards = document.querySelectorAll(
-                '.glass-card, [class*="bg-surface-container"], [class*="bg-surface-variant"]');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, 80 * index);
-            });
-        });
-    </script>
-    @endpush
 </x-layouts.front>
