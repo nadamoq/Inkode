@@ -15,7 +15,7 @@ class SyncPostTags
         //
 
     }
-    public function handle(Post $post,array|string $tags){
+    public function handle(Post $post,array|string|null $tags){
 
         if (empty($tags)) {
             return;
@@ -50,6 +50,6 @@ class SyncPostTags
         }
 
         
-        $post->tags()->syncWithoutDetaching($tagIds);
+        $post->tags()->sync($tagIds);
     }
 }

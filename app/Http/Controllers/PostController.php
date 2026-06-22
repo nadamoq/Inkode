@@ -10,6 +10,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -82,29 +83,18 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostRequest $request, FileUpload $file, SyncPostTags $Synctags)
+    public function store(PostRequest $request, FileUpload $file,PostService $postService)
     {
         //
-        $clean = $request->validated();
-        DB::beginTransaction();
+        try{
+            $postService->store($request);
 
-        try {
-
-            $data = array_merge([
-                'image' => $file->handle('cover_image', 'posts', 'public') ?? null,
-                'published_at' => now(),
-            ], $clean);
-
-            $post = Post::create($data);
-            $Synctags->handle($post, $data['tags']);
-
-            DB::commit();
-        } catch (Throwable $e) {
-
-            DB::rollBack();
-            return back()->withInput()->withErrors(['error' => 'Failed to create Post' . $e->getMessage()]);
         }
-
+        catch(Throwable $e){
+            return  back()->withInput()->withErrors(['error'=>'Failed to create Post '.$e->getMessage()]);
+    
+        }
+  
         return redirect()->route('dashboard.posts.index')->with(['success' => true, 'message' => 'Post created successfully']);
     }
 
@@ -113,11 +103,21 @@ class PostController extends Controller
      */
     public function show(String $slug)
     {
-        $post = Post::published()->slug($slug)->firstOrFail();
+        
+        $post = Post::query()
+            ->published()
+            ->withoutGlobalScope('owner')
+            ->slug($slug)
+            ->firstOrFail();
+
+        $more = Post::query()->withoutGlobalScope('owner')
+            ->where('user_id', $post->user_id)
+            ->where('slug', '!=', $post->slug)
+            ->take(2);
 
         PostViewed::dispatch($post);
 
-        return view('blog.posts.show', compact('post'));
+        return view('blog.posts.show', compact('post', 'more'));
     }
 
     /**
@@ -135,34 +135,9 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, FileUpload $file, string $slug)
-    {
-        $post = Post::slug($slug)->firstOrFail();
-        //
-        $clean = $request->validated();
-        $data = array_merge([
-            'user_id' => auth()->id,
-           
-            'image' => $file->handle('cover_image', 'posts', 'public') ?? null,
-        ], $clean);
-
-        $result = $post->update($data);
-
-        if ($result && $request->hasFile('cover_image') && $previous = $post->getOriginal('image')) {
-            Storage::disk('public')->delete($previous);
-        }
-
-        $tags = json_decode($request->input('tags', '[]'), true);
-        if (!is_array($tags)) {
-            $tags = [];
-        }
-
-        $tagIds = [];
-        foreach (array_filter($tags) as $tag) {
-            $tagIds[] = Tag::firstOrCreate(['name' => $tag])->id;
-        }
-
-        $post->tags()->sync($tagIds);
+    public function update(UpdatePostRequest $request, FileUpload $file, Post $post,PostService $postService)
+    {   
+        $postService->update($request,$post);
         return redirect()->route('dashboard.posts.index')->with(['success' => true, 'message' => 'Post updated successfully']);
     }
 

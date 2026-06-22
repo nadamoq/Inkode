@@ -22,19 +22,18 @@ class UpdatePostRequest extends FormRequest
      */
     public function rules(): array
     {
-         $postId = $this->route('post')->id;
-
+        $postId = $this->route('post')->id;
+ 
         return [
             //
-            'title' => 'required|string|max:500|min:3|unique:posts,title,'.$postId,
-            'content' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'cover_image' => 'nullable|image|max:2048|mimes:jpeg,png,jpg,gif,svg',
-            function($attribute,$value,$fail){
-                if(str_contains($value,'god'))
+            'title' => 'sometimes|required|string|max:500|min:3|unique:posts,title,' . $postId,
+            'content' => ['sometimes','required', 'string', function ($attribute, $value, $fail) {
+                if (str_contains($value, 'god'))
                     $fail('The :attribute field contains inappropriate content.');
-            },
-            'tags' => 'nullable|string',
+            },],
+            'category_id' => 'sometimes|exists:categories,id',
+            'cover_image' => 'sometimes|image|max:2048|mimes:jpeg,png,jpg,gif,svg',
+            'tags' => 'sometimes|string',
         ];
     }
 }

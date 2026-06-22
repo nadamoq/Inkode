@@ -8,7 +8,7 @@
     <link rel="icon" href="{{ asset('assets/images/logo.png') }}" type="image/png" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    {{$headScript ?? ''}}
+    {{ $headScript ?? '' }}
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
@@ -154,7 +154,7 @@
                         "primary-fixed": "#e1e0ff",
                         "on-surface-variant": {
                             DEFAULT: "#c7c4d7",
-                            light: "#2d3133" 
+                            light: "#2d3133"
                         },
                         "secondary": "#89ceff",
                         "secondary-fixed": "#c9e6ff",
@@ -275,10 +275,17 @@
             }
         }
     </script>
+    <script>
+        const User_ID = "{{ auth()->id() }}"
+    </script>
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     @stack('style')
 </head>
 
 <body
+
     class="bg-background-light dark:bg-background text-on-surface-light dark:text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container transition-colors duration-300">
     <!-- TopNavBar -->
     <header
@@ -320,17 +327,18 @@
                     Create Post
                 </a>
                 @auth
-                <div
-                    class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant-light dark:border-outline-variant">
-                    <img alt="User profile"
-                        src="{{Auth::user()?->avatar}}" />
-                     </div>
-                     <button onclick="document.getElementById('logout').submit()"> logout </button>
-                    <form action="{{route('logout')}}" method="POST" style="hidden" id="logout">@csrf</form>
-               
+                    <div
+                        class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant-light dark:border-outline-variant">
+                        <img alt="User profile" src="{{ Auth::user()?->avatar }}" />
+                    
+                    </div>
+                    <span>{{auth()->user()->username}}</span>
+                    <button onclick="document.getElementById('logout').submit()"> logout </button>
+                    <form action="{{ route('logout') }}" method="POST" style="hidden" id="logout">@csrf</form>
                 @else
-                 
-                     <a href="{{route('login')}}"> <p>login</p></a>
+                    <a href="{{ route('login') }}">
+                        <p>login</p>
+                    </a>
                 @endauth
             </div>
         </div>
@@ -370,46 +378,7 @@
             </div>
         </div>
     </footer>
-    <script>
-        //     const themeToggleBtn = document.getElementById('theme-toggle');
-        //     const htmlElement = document.documentElement;
 
-        //     themeToggleBtn.addEventListener('click', () => {
-        //         if (htmlElement.classList.contains('dark')) {
-        //             htmlElement.classList.remove('dark');
-        //             htmlElement.classList.add('light');
-        //         } else {
-        //             htmlElement.classList.remove('light');
-        //             htmlElement.classList.add('dark');
-        //         }
-        //     });
-    </script>
-    <script>
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     const html = document.documentElement;
-
-        //     const savedTheme = localStorage.getItem('theme');
-
-        //     if (savedTheme === 'dark') {
-        //         html.classList.add('dark');
-        //     } else {
-        //         html.classList.remove('dark');
-        //     }
-
-        //     const btn = document.getElementById('theme-toggle');
-
-        //     if (!btn) return;
-
-        //     btn.addEventListener('click', () => {
-        //         html.classList.toggle('dark');
-
-        //         localStorage.setItem(
-        //             'theme',
-        //             html.classList.contains('dark') ? 'dark' : 'light'
-        //         );
-        //     });
-        // });
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const html = document.documentElement;

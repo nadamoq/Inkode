@@ -14,8 +14,9 @@ class HomeController extends Controller
     public function __invoke(Request $request)
     {
         //
-        $posts=Post::withoutGlobalScope('owner')->with('category', 'author','comments')->latest()->paginate(5);
-        $post=Post::withoutGlobalScope('owner')->with('category','tags')->latest()->first();
+      
+        $posts=Post::withoutGlobalScope('owner')->with('category', 'author','comments')->published()->where('user_id','!=',auth()->id??1)->latest()->paginate(5);
+        $post=Post::withoutGlobalScope('owner')->with('category','tags')->published()->latest()->first();
         $tags=Tag::latest()->limit(10)->get();
         return view('blog.home',[
             'posts' => $posts,

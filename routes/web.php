@@ -5,6 +5,7 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\PostController as UserPostController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +36,4 @@ Route::middleware('auth')->group(function(){
 });
 
 Route::get('/show-post/{post:slug}',[UserPostController::class,'show'])->name('posts.show');
-Route::get('/u/{username}',function(){return view('show-author-profile');})->name('user.profile');
+Route::get('/u/{username}', [ProfileController::class, 'show'])->name('user.profile');

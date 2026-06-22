@@ -5,8 +5,10 @@ namespace App\Notifications;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Broadcast;
 
 class FollowNotification extends Notification
 {
@@ -15,7 +17,7 @@ class FollowNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(protected User $user,protected User $follower)
+    public function __construct(protected User $user, protected User $follower)
     {
         //
     }
@@ -27,7 +29,7 @@ class FollowNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail','database'];
+        return ['mail', 'database', 'broadcast'];
     }
 
     /**
@@ -40,21 +42,34 @@ class FollowNotification extends Notification
             ->greeting("Hi .{$notifiable->name},")
             ->line("{$this->follower->name} started following you")
             ->line("check profile's Follower")
-            ->action('View Profile', route('user.profile',$this->follower->username))
+            ->action('View Profile', route('user.profile', $this->follower->username))
             ->line('Thank you for using our application!');
-             
     }
     public function toDatabase(object $notifiable)
     {
-        return ['title'=>'new follower',
-                'body'=>"{$this->follower->name} started following you",
-                'follower_name'=>$this->follower->name,
-                'link'=>route('user.profile',$this->follower->username),
-                'meta'=>[   'follower_id'   => $this->follower->id,
-                            'follower_avatar'   =>  $this->follower->avatar,
-                            
-                        ]
-                ];
+        return [
+            'title' => 'new follower',
+            'body' => "{$this->follower->name} started following you",
+            'follower_name' => $this->follower->name,
+            'link' => route('user.profile', $this->follower->username),
+            'meta' => [
+                'follower_id'   => $this->follower->id,
+                'follower_avatar'   =>  $this->follower->avatar,
+
+            ]
+        ];
+    }
+    public function toBroadcast(object $notifiable): array |BroadcastMessage
+    {
+        return new BroadcastMessage([ 'title' => 'new follower',
+            'body' => "{$this->follower->name} started following you",
+            'follower_name' => $this->follower->name,
+            'link' => route('user.profile', $this->follower->username),
+            'meta' => [
+                'follower_id'   => $this->follower->id,
+                'follower_avatar'   =>  $this->follower->avatar,
+
+            ]]);
     }
 
     /**
@@ -66,6 +81,7 @@ class FollowNotification extends Notification
     {
         return [
             //
+           
         ];
     }
 }

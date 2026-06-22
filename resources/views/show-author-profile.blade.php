@@ -226,9 +226,9 @@
                     <div class="relative w-max mx-auto lg:mx-0">
                         <div
                             class="w-48 h-48 md:w-64 md:h-64 rounded-[2.5rem] overflow-hidden border-2 border-primary-container/30 bg-surface-container rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl">
-                            <img alt="Elena Rostova"
+                            <img alt="{{ $user->name }}"
                                 class="w-full h-full object-cover -rotate-3 hover:rotate-0 transition-transform duration-500"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAiRWN3pX-JZTudAkeRHtO8BUH6GeyR4MDn_q1PVzjMOP56i9AWDTRln0ThdXi8Nq-vWDEDKwVpaFB45BsWzXGKBNlJoTGn0ir2f1Mw6n_VXYE23CpO_9O8EejyitzfJGNz1nfCTX-d8KsOEvo3Ks0vUWaNzBQnWlY06BW8vnAxLfG0JgYhgl8SFkAPpcOMYqrBNCZpZ-1vcPByLfWOX63lUZHsr8-sez_N-Cki4UCLHEeUu5UTNwTjdJEY0Wy8NBidWLAucNQmEk" />
+                                src="{{ $user->avatar }}" />
                         </div>
                         <div
                             class="absolute -bottom-1 -right-1 bg-primary-container text-white p-3 rounded-2xl shadow-xl border-4 border-surface rotate-6">
@@ -244,7 +244,7 @@
                                     Top Author</div>
                                 <h1
                                     class="font-display text-4xl md:text-6xl font-extrabold text-on-surface mb-4 tracking-tighter leading-none">
-                                    Elena Rostova</h1>
+                                    {{ $user->name }}</h1>
                                 <p
                                     class="text-lg md:text-xl text-on-surface-variant max-w-2xl leading-relaxed font-medium">
                                     Critical thinker, system architect, and full-stack storyteller. Exploring the
@@ -260,7 +260,7 @@
                                     href="#">
                                     <span class="material-symbols-outlined text-[18px]"
                                         data-icon="alternate_email">alternate_email</span>
-                                    <span>@elena_writes</span>
+                                    <span>{{ '@' . $user->username }}</span>
                                 </a>
                                 <a class="flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors text-sm font-semibold"
                                     href="#">
@@ -270,9 +270,7 @@
                                 </a>
                             </div>
                             <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
-                                <button
-                                    class="bg-primary-container text-white px-8 py-3.5 rounded-xl font-bold hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary-container/25">Follow
-                                    Author</button>
+                                <x-follow-button :user="$user" variant="profile" />
                                 <button
                                     class="border border-outline-variant bg-surface-container-low/50 backdrop-blur-sm text-on-surface px-8 py-3.5 rounded-xl font-bold hover:bg-surface-container transition-all">Share
                                     Profile</button>
@@ -283,7 +281,7 @@
                             <div
                                 class="bg-surface-container/40 backdrop-blur-xl border border-outline-variant/30 p-5 rounded-2xl min-w-[140px] hover:bg-surface-container/60 transition-colors">
                                 <span
-                                    class="block font-display text-2xl font-bold text-primary-container leading-none mb-1">12.4k</span>
+                                    class="block font-display text-2xl font-bold text-primary-container leading-none mb-1">{{ number_format($user->followers_count) }}</span>
                                 <span
                                     class="text-[10px] font-bold text-outline uppercase tracking-wider">Followers</span>
                             </div>

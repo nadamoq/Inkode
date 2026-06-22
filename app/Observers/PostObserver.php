@@ -17,7 +17,7 @@ class PostObserver
         //
         $post->slug=Str::slug($post->title);
         $post->status=PostStatus::Published;
-        $post->user_id=Auth::id();
+        $post->user_id=Auth::id()??3;
     }
 
     /**

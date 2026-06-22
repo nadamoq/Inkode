@@ -22,8 +22,10 @@
             <div class="flex items-center gap-xs">
                 <span class="text-on-surface-light dark:text-on-surface text-body-md font-bold">{{ $post->author->name }}</span>
                 <span class="text-on-surface-variant-light dark:text-outline text-label-caps font-label-caps">•
-                    {{ $post->created_at->format('M j, Y') }}</span>
+                    {{ $post->publish_time }}
+                </span>
             </div>
+            
             <button
                 class="material-symbols-outlined text-outline-light dark:text-outline hover:text-primary transition-colors">bookmark</button>
         </div>

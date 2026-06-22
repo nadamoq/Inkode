@@ -26,12 +26,10 @@ class RecommendedAuthors extends Component
         //بجيب اليوزرز اللي بتابعهم عشان استثنيهم
         $this->authors = User::query()
             ->withExists([
-                'followers' => function ($q) {
-                    $q->where('follower_id', Auth::id() ?? 0);
-                }
+                'followers' => fn($q) => $q->where('follower_id', Auth::id() ?? 0),
             ])
             ->where('id', '<>', Auth::id() ?? 0)
-            ->limit(20)
+            ->limit($this->count)
             ->get();
         return view('components.recommended-authors');
     }

@@ -198,7 +198,7 @@
             <!-- Live Activity -->
             <x-live-activity title="Live Activity" />
             <!-- Top Minds -->
-            <x-recommended-authors title="Top Authors" count=4 />
+            <x-recommended-authors title="Top Authors" count=5 />
         </aside>
     </div>
 </x-layouts.front>

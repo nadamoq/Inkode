@@ -200,7 +200,7 @@
                             for="email">Account Email</label>
                         <input
                             class="w-full h-12 px-4 bg-surface-container-lowest/50 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container outline-none transition-all text-on-surface placeholder:text-outline"
-                            id="email" name="{{config('fortify.username')}}" placeholder="dev@inkode.io" required="" type="email" />
+                            id="email" name="{{config('fortify.username')}}" placeholder='@ usernmme' required="" type="text" />
                     </div>
                     <!-- Password Field -->
                     <div class="space-y-2">

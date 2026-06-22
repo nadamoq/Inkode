@@ -6,16 +6,19 @@ namespace App\Models;
 
 
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -65,8 +68,10 @@ class User extends Authenticatable
     public function avatar(): Attribute
     {
         return new Attribute(
-            get: function () {
-                return  $this->image ? Storage::disk('public')->url($this->image) : asset('assets/images/DefaultUser.png');
+            get: function (mixed $value, array $attributes) {
+                return ! empty($attributes['avatar'])
+                    ? Storage::disk('public')->url($attributes['avatar'])
+                    : asset('assets/images/DefaultUser.png');
             }
         );
     }
@@ -80,4 +85,11 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')
             ->withPivot(['id', 'created_at']);
     }
+
+    // public function scopeWithFollowStatus(Builder $query): Builder
+    // {
+    //     return $query->withExists([
+    //         'followers' => fn ($q) => $q->where('follower_id', Auth::id() ?? 0),
+    //     ]);
+    // }
 }

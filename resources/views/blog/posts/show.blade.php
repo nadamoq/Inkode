@@ -1,4 +1,9 @@
 <x-layouts.front title="Article">
+   <x-slot:headScript>
+    <script>
+        const Post_Owner_ID = "{{ $post->user_id }}"
+    </script>
+   </x-slot:headScript>
     @push('style')
         <!-- Geist font emulation -->
         <link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet" />
@@ -304,21 +309,16 @@
                 <!-- Author Block (Repositioned for Inkode) -->
                 <div
                     class="lg:hidden flex items-center justify-between mb-8 p-4 bg-surface-container rounded-xl border border-outline-variant transition-colors">
-                     <form method="post" action="{{route('follow',$post->author->id)}}">
-                            @csrf
-                    <div class="flex items-center gap-4">
-                        <img class="w-10 h-10 rounded-full grayscale border border-outline"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrB-fTH_sGc-EoJs3tiJjk17n12cNKJM223VhyTD5FfEtDknySO7GKIj0HvaJ3d-MoqtVOP8Yfk-dObjmX9mmt7mFiMRgqqpHWCsYFFpmpKBTaBXmgoB4M75gSnf4MJhP1WCx3DUb1E9iLnP1S039Q9dKb0JB_82yuO9S-WADZqyUPUVc_7lpe6Od7eVj2dcesczICWUxGQu7qeDZM0cH-Zqb8erGsQU-AEaICg0K2DynpHlKKOtRY0rPe9qhTIpUEN05vqmFz9_FG" />
+                    <a href="{{ route('user.profile', $post->author->username) }}" class="flex items-center gap-4">
+                        <img class="w-10 h-10 rounded-full grayscale border border-outline object-cover"
+                            src="{{ $post->author->avatar }}" alt="{{ $post->author->name }}" />
                         <div>
                             <p class="font-bold text-on-surface">{{ $post->author->name }}</p>
                             <p class="text-xs text-on-surface-variant">{{ $post->published_at->format('M j, Y') }} · 12
                                 min read</p>
                         </div>
-                    </div>
-                    <button type="submit"
-                        class="bg-secondary text-on-secondary px-4 py-1.5 rounded-full text-xs font-bold">Follow</button>
-                       
-                        </form>
+                    </a>
+                    <x-follow-button :user="$post->author" variant="sidebar-mobile" />
                 </div>
             </header>
             <!-- Article Body -->
@@ -394,12 +394,11 @@
             <div class="sticky top-32 space-y-6">
                 <div class="p-6 bg-surface-container rounded-2xl border border-outline-variant transition-colors">
                     <div class="flex flex-col items-center text-center">
-                        <img class="w-20 h-20 rounded-full grayscale border-2 border-primary mb-4"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrB-fTH_sGc-EoJs3tiJjk17n12cNKJM223VhyTD5FfEtDknySO7GKIj0HvaJ3d-MoqtVOP8Yfk-dObjmX9mmt7mFiMRgqqpHWCsYFFpmpKBTaBXmgoB4M75gSnf4MJhP1WCx3DUb1E9iLnP1S039Q9dKb0JB_82yuO9S-WADZqyUPUVc_7lpe6Od7eVj2dcesczICWUxGQu7qeDZM0cH-Zqb8erGsQU-AEaICg0K2DynpHlKKOtRY0rPe9qhTIpUEN05vqmFz9_FG" />
+                        <img class="w-20 h-20 rounded-full grayscale border-2 border-primary mb-4 object-cover"
+                            src="{{ $post->author->avatar }}" alt="{{ $post->author->name }}" />
                         <h3 class="geist-font font-bold text-xl text-on-surface">{{ $post->author->name }}</h3>
-                        <p class="text-sm text-secondary mb-6">Interface Philosopher &amp; Architect</p>
-                        <button
-                            class="w-full bg-primary text-on-primary font-bold py-2.5 rounded-lg transition-all hover:opacity-90 active:scale-95 mb-4">Follow</button>
+                        <p class="text-sm text-secondary mb-6">{{ '@' . $post->author->username }}</p>
+                        <x-follow-button :user="$post->author" variant="full" class="mb-4" />
                         <div class="grid grid-cols-2 gap-4 w-full text-center">
                             <div>
                                 <p class="text-xs text-on-surface-variant uppercase tracking-wider font-bold">Read
@@ -421,7 +420,7 @@
                             {{ $post->author->name }}</h4>
                         <div class="space-y-4">
                             @foreach ($more->get() as $item)
-                                <a class="block group" href="#">
+                                <a class="block group" href="{{ route('posts.show', $item->slug) }}">
                                     <p
                                         class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors mb-1">
                                         {{ $item->title }}
