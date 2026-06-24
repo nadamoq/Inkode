@@ -308,10 +308,16 @@
                     <span class="text-xs text-outline font-label-caps uppercase">{{$item->created_at->diffForHumans()}}</span>
                 </div>
                 </a>
-                <button class="p-xs hover:bg-surface-variant/50 rounded-lg transition-all self-center">
-                    <span class="material-symbols-outlined text-on-surface-variant" data-icon="more_vert">more_vert</span>
-                </button>
+                <div class="flex items-center gap-sm">
+                    <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(192,193,255,0.6)]"></div>
+                    <button class="p-xs hover:bg-surface-variant/50 rounded-lg transition-all">
+                        <span class="material-symbols-outlined text-on-surface-variant"
+                            data-icon="more_vert">more_vert</span>
+                    </button>
+                </div>
+               
             </div>
+
               @endforeach
             <!-- Notification Item: Publication Live -->
             <div

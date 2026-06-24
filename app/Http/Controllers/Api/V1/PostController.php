@@ -6,6 +6,7 @@ use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Services\PostService;
 use Illuminate\Http\Request;
@@ -21,35 +22,32 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts= Post::published()->with('category')->paginate();
-        return $posts;
+        $posts = Post::published()->with('category')->paginate();
+        return PostResource::collection($posts);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostRequest $request,PostService $postService)
+    public function store(PostRequest $request, PostService $postService)
     {
         //
-        try{
+        try {
             /**
              * @var \App\Models\User
-              */ 
-            $user=Auth::guard('sanctum')->user();
-           if(! $user->currentAccessToken()->can('post.create')){
-                return response()->json(['error'=>'unauthorized','message'=>'you are not allowed'],403);
-           }
+             */
+            $user = Auth::guard('sanctum')->user();
+            if (! $user->currentAccessToken()->can('post.create')) {
+                return response()->json(['error' => 'unauthorized', 'message' => 'you are not allowed'], 403);
+            }
 
 
-            $post= $postService->store($request);
-
+            $post = $postService->store($request);
+        } catch (Throwable $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage(),], Response::HTTP_BAD_REQUEST);
         }
-        catch(Throwable $e){
-            return response()->json(['status'=>'error','message'=>$e->getMessage(),],Response::HTTP_BAD_REQUEST);
-        }
-  
-        return response()->json(['status' => 'success', 'message' => 'Post created successfully','post'=>$post->refresh()],Response::HTTP_CREATED);
-   
+
+        return response()->json(['status' => 'success', 'message' => 'Post created successfully', 'post' => new PostResource($post->refresh())], Response::HTTP_CREATED);
     }
 
     /**
@@ -57,31 +55,27 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        
-        if($post->status!= PostStatus::Published){
+
+        if ($post->status != PostStatus::Published) {
             return  Response::HTTP_NOT_FOUND;
         }
-        return $post->load(['category:id,name','author:id,username']);
+        return $post->load(['category:id,name', 'author:id,username']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post,PostService $postService)
+    public function update(UpdatePostRequest $request, Post $post, PostService $postService)
     {
         //
-        try{
+        try {
 
-            $postService->update($request,$post);
-
+            $postService->update($request, $post);
+        } catch (Throwable $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage(),], Response::HTTP_BAD_REQUEST);
         }
-        catch(Throwable $e){
-            return response()->json(['status'=>'error','message'=>$e->getMessage(),],Response::HTTP_BAD_REQUEST);
-        }
-  
-        return response()->json(['status' => 'success', 'message' => 'Post updated successfully'],Response::HTTP_CREATED);
-   
 
+        return response()->json(['status' => 'success', 'message' => 'Post updated successfully'], Response::HTTP_CREATED);
     }
 
     /**
@@ -92,6 +86,5 @@ class PostController extends Controller
         //
         $post->delete();
         return Response::HTTP_NO_CONTENT;
-
     }
 }

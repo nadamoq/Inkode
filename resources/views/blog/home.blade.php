@@ -18,7 +18,7 @@
                                         class="bg-primary/10 px-xs py-1 rounded-full text-label-caps font-label-caps text-on-primary-fixed-variant">
                                         #{{ $post->tags->first()->name }}</span>
                                     <span
-                                        class="dark:text-on-surface-variant text-label-caps font-label-caps text-on-surface-light">12
+                                        class="dark:text-on-surface-variant text-label-caps font-label-caps text-on-surface-light">{{$post->read_time}}
                                         MIN READ</span>
                                 </div>
                                 <h2

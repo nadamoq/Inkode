@@ -7,4 +7,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('V1')->group(__DIR__.'/api/v1.php');
+Route::prefix('V1')->group(__DIR__ . '/api/v1.php');

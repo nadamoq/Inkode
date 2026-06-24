@@ -29,7 +29,7 @@ class NotificationController extends Controller
     public function destroy(string $id)
     {
         $user = Auth::user();
-        $user->notifications() - findOrFail($id)->delete();
+        $user->notifications()->findOrFail($id)->delete();
         return redirect()->back();
     }
 }

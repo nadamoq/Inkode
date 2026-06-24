@@ -2,14 +2,15 @@
     class="glass-card p-md rounded-xl flex gap-md items-start group hover:border-primary/50 transition-colors duration-300">
     <div class="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden flex-shrink-0">
         <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            src="{{ $post->thumbnailUrl }}" alt="{{ $post->title }}" />
+            src="{{ $post->thumbnail_url }}" alt="{{ $post->title }}" />
     </div>
     <div class="flex-grow">
         <div class="flex gap-xs mb-xs">
             <span
                 class="text-primary-container-light dark:text-tertiary text-label-caps font-label-caps">{{ $post->category->name }}</span>
             <span class="text-on-surface-variant-light dark:text-outline text-label-caps font-label-caps">
-                MIN READ</span>
+
+                {{$post->read_time}} MIN READ</span>
         </div>
         <h4
             class="font-display text-body-lg font-bold text-on-surface-light dark:text-on-surface mb-sm group-hover:text-primary transition-colors">

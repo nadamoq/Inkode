@@ -8,18 +8,22 @@ use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class PostService
 {
+
     /**
      * Create a new class instance.
      */
     public function __construct( public FileUpload $file, public SyncPostTags $Synctags)
     {
         //
+
+        
 
     }
     public function store(PostRequest $request):Post|null{

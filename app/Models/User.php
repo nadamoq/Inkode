@@ -62,9 +62,14 @@ class User extends Authenticatable
     }
     public function posts()
     {
-
         return $this->hasMany(Post::class);
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
     public function avatar(): Attribute
     {
         return new Attribute(
@@ -84,6 +89,28 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')
             ->withPivot(['id', 'created_at']);
+    }
+    public function hasAbility(string $ability):bool{
+
+        foreach($this->roles as $role){
+
+           return in_array($ability,$role->abilities);
+            
+        }
+        return false;
+    }
+    public function hasRole(Role $role){
+       
+        foreach($this->roles as $userRole){
+
+           if($userRole->name==$role->name){
+            return true;
+           }
+
+        }
+        return false;
+            
+        
     }
 
     // public function scopeWithFollowStatus(Builder $query): Builder

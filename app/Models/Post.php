@@ -23,7 +23,8 @@ class Post extends Model
     protected $fillable = ['title', 'content', 'slug', 'status', 'user_id', 'category_id', 'image', 'published_at', 'excerpt',];
 
     protected $casts = ['published_at' => 'datetime', 'metadata' => 'json', 'status' => PostStatus::class,];
-
+    protected $hidden = ['deleted_at'];
+    protected $appends = ['read_time','publish_time','thumbnail_url'];
 
     public function scopePublished(Builder $builder, string|\DateTime|null $time = null)
     {
@@ -110,5 +111,9 @@ class Post extends Model
             get: fn() => $this->published_at ? $this->published_at->format('M j, Y') : $this->created_at->format('M j, Y')
 
         );
+    }
+    public function readTime():Attribute{
+        return (new Attribute(get:fn()=>
+            \ceil(str_word_count((string)$this->content)/200)))->shouldCache();
     }
 }
