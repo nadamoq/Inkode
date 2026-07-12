@@ -1,0 +1,22 @@
+{
+    "agents": [
+        "cursor",
+        "gemini",
+        "copilot",
+        "claude_code"
+    ],
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "packages": [
+        "laravel/ai",
+        "laravel/fortify"
+    ],
+    "sail": false,
+    "skills": [
+        "pest-testing",
+        "tailwindcss-development",
+        "ai-sdk-development",
+        "fortify-development"
+    ]
+}

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Actions\FileUpload;
 use App\Actions\SyncPostTags;
+use App\Ai\Agents\SeoAgent;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
@@ -11,6 +12,7 @@ use App\Models\Tag;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Ai\Enums\Lab;
 use Throwable;
 
 class PostService
@@ -19,15 +21,16 @@ class PostService
     /**
      * Create a new class instance.
      */
-    public function __construct( public FileUpload $file, public SyncPostTags $Synctags)
+    public function __construct(public FileUpload $file, public SyncPostTags $Synctags)
     {
         //
 
-        
+
 
     }
-    public function store(PostRequest $request):Post|null{
-        
+    public function store(PostRequest $request): Post|null
+    {
+
         $clean = $request->validated();
 
         DB::beginTransaction();
@@ -40,24 +43,41 @@ class PostService
             ], $clean);
 
             $post = Post::create($data);
+            $content = strip_tags($post->content);
+            $prompt = "Generate SEO metadata and summary (maximum words: 100) for this blog post.
+                - Post title: {$post->title}
+                - Post Content: {$content}";
+            $seoAgent = new SeoAgent;
+            $response = $seoAgent->prompt(
+                prompt: $prompt,
+                provider: Lab::Groq,
+                model: 'openai/gpt-oss-20b',
+            );
+            $post->metadata = [
+                'title' => $response['title'] ?? '',
+                'description' => $response['description'] ?? '',
+                'keywords' => implode(', ', $response['keywords'] ?? []),
+                'summary' => $response['summary'] ?? '',
+            ];
+            $post->excerpt=$response['summary'] ?? '';
+            $post->save();
             $this->Synctags->handle($post, $data['tags']);
-
+                dd($post);
             DB::commit();
             return $post;
-            
         } catch (Throwable $e) {
 
             DB::rollBack();
             throw $e;
-            }
-
+        }
     }
-    public function update(UpdatePostRequest $request, Post $post){
-        
+    public function update(UpdatePostRequest $request, Post $post)
+    {
+
         $clean = $request->validated();
         $data = array_merge([
-            'user_id' => auth()->id??3,
-           
+            'user_id' => auth()->id ?? 3,
+
             'image' => $this->file->handle('cover_image', 'posts', 'public') ?? null,
         ], $clean);
 
@@ -67,8 +87,7 @@ class PostService
             Storage::disk('public')->delete($previous);
         }
 
-        $this->Synctags->handle($post,$data['tags']??null);
+        $this->Synctags->handle($post, $data['tags'] ?? null);
         return true;
-
     }
 }

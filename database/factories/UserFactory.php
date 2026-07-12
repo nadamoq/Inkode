@@ -29,7 +29,6 @@ class UserFactory extends Factory
             'username' => fake()->unique()->userName(),
             'role' => fake()->randomElement(['admin', 'author', 'user']),
             'country_code' => fake()->countryCode(),
-            'status' => fake()->randomElement(['active', 'inactive']),
             'timezone' => fake()->timezone(),
             'avatar' => fake()->imageUrl(400, 400, 'people', true),
             'email' => fake()->unique()->safeEmail(),

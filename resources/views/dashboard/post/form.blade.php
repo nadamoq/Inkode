@@ -513,6 +513,7 @@
                     @error('excerpt')
                         <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
                     @enderror
+                    <button class="content-ai" id=" ai">write with Ai</button>
                     <!-- Main Content Editor -->
                     <textarea name="content" id="content"
                         class="w-full min-h-[600px] bg-transparent border-none focus:outline-none font-body-lg text-body-lg text-on-surface leading-relaxed placeholder:text-outline"
@@ -589,6 +590,16 @@
 
     </div>
     @push('script')
+        <script>
+            const btn=document.getElementById('ai');
+            btn.addEventListener('click',function name(event){
+                event.preventDefault();
+                let message=window.prompt('Describe the content you want to generate:');
+                if(message){
+                    const evtsrc
+                }
+            });
+        </script>
         <script>
             (function() {
                 const lightContentStyle = `

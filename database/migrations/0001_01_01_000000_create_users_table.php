@@ -23,8 +23,7 @@ return new class extends Migration
             $table->boolean('active')->default(true);
             $table->string('avatar')->nullable();
             $table->string('country_code',2)->nullable();
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->rememberToken();
+             $table->rememberToken();
             $table->timestamps();
         });
 
