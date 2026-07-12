@@ -265,11 +265,8 @@
             <div
                 class="sticky top-32 space-y-8 flex flex-col items-center py-4 bg-surface-container rounded-2xl border border-outline-variant transition-colors">
                 <div class="flex flex-col items-center gap-1 group cursor-pointer">
-                    <button
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
-                        <span class="material-symbols-outlined">favorite</span>
-                    </button>
-                    <span class="text-xs font-semibold text-secondary">1.2k</span>
+                   <x-like-button :post="$post">
+                    <span class="text-xs font-semibold text-secondary">{{$post->likes->count()}}</span>
                 </div>
                 <div class="flex flex-col items-center gap-1 group cursor-pointer">
                     <button
@@ -283,10 +280,7 @@
                     class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
                     <span class="material-symbols-outlined">bookmark</span>
                 </button>
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
-                    <span class="material-symbols-outlined">share</span>
-                </button>
+             
             </div>
         </aside>
         <!-- Main Content Column -->

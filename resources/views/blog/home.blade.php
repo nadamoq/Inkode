@@ -5,7 +5,7 @@
         <div class="col-span-12 lg:col-span-8 space-y-xl">
             <!-- Featured Article -->
             <section class="group relative">
-                <a href="{{ route('posts.show', $post->slug) }}">
+                <a href="{{ route('dashboard.posts.show', $post->slug) }}">
                     <div class="featured-border rounded-xl overflow-hidden glass-card transition-all duration-300">
                         <div class="flex flex-col md:flex-row h-full">
                             <div class="md:w-1/2 overflow-hidden h-[300px] md:h-auto">
@@ -28,17 +28,20 @@
                                     class="text-on-surface-variant-light dark:text-on-surface-variant font-body-md mb-lg line-clamp-3">
                                     {{ $post->excerpt }}
                                 </p>
-                                <div class="flex items-center gap-sm">
-                                    <img class="w-10 h-10 rounded-full object-cover border border-outline-variant-light dark:border-outline-variant"
-                                        src="{{ $post->author->avatar }}" />
-                                    <div>
-                                        <p
-                                            class="font-display font-bold text-on-surface-light dark:text-on-surface text-body-md">
-                                            {{ $post->author->name }}</p>
-                                        <p
-                                            class="text-on-surface-variant-light dark:text-on-surface-variant text-label-caps font-label-caps">
-                                            PRINCIPAL ARCHITECT</p>
+                                <div class="flex items-center justify-between w-full">
+                                    <div class="flex items-center gap-sm">
+                                        <img class="w-10 h-10 rounded-full object-cover border border-outline-variant-light dark:border-outline-variant"
+                                            src="{{ $post->author->avatar }}" />
+                                        <div>
+                                            <p
+                                                class="font-display font-bold text-on-surface-light dark:text-on-surface text-body-md">
+                                                {{ $post->author->name }}</p>
+                                            <p
+                                                class="text-on-surface-variant-light dark:text-on-surface-variant text-label-caps font-label-caps">
+                                                PRINCIPAL ARCHITECT</p>
+                                        </div>
                                     </div>
+                                    <x-like-button :post="$post" layout="inline" />
                                 </div>
                             </div>
                         </div>
@@ -135,10 +138,7 @@
                 class="flex justify-between items-end border-b border-outline-variant-light dark:border-outline-variant/10 pb-md">
                 <h3 class="font-display text-headline-md dark:text-primary text-on-surface-light">Recent
                     Insights</h3>
-                <a class="text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary text-label-caps font-label-caps flex items-center gap-xs transition-colors"
-                    href="{{ route('dashboard.posts.index') }}">
-                    VIEW ALL <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </a>
+             
             </div>
             @foreach ($posts as $post)
                 <div class="space-y-md">

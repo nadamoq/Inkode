@@ -49,7 +49,7 @@ class PostController extends Controller
         }
 
         $posts = $posts->withTrashed()
-                ->with('category')
+                ->with(['category','likedByUsers'])
                 ->select(
                     'id',
                     'title',
@@ -106,6 +106,7 @@ class PostController extends Controller
         
         $post = Post::query()
             ->published()
+            ->with('likedByUsers')
             ->withoutGlobalScope('owner')
             ->slug($slug)
             ->firstOrFail();

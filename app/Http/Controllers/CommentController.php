@@ -2,64 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
+use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
-use Illuminate\Http\Request;
+use App\Models\Post;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Store a newly created comment in storage.
      */
-    public function index()
+    public function store(StoreCommentRequest $request, Post $post): RedirectResponse
     {
-        //
+        $post->comments()->create([
+            'content' => $request->validated('content'),
+            'user_id' => auth()->id(),
+            'user_name' => auth()->user()->name,
+        ]);
+
+        return back()->with('success', 'Comment added successfully.');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Update the specified comment in storage.
      */
-    public function create()
+    public function update(UpdateCommentRequest $request, Comment $comment): RedirectResponse
     {
-        //
+        Gate::authorize('update', $comment);
+
+        $comment->update([
+            'content' => $request->validated('content'),
+        ]);
+
+        return back()->with('success', 'Comment updated successfully.');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Remove the specified comment from storage.
      */
-    public function store(Request $request)
+    public function destroy(Comment $comment): RedirectResponse
     {
-        //
-    }
+        Gate::authorize('delete', $comment);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
+        $comment->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comment $comment)
-    {
-        //
+        return back()->with('success', 'Comment deleted successfully.');
     }
 }

@@ -14,7 +14,7 @@
         </div>
         <h4
             class="font-display text-body-lg font-bold text-on-surface-light dark:text-on-surface mb-sm group-hover:text-primary transition-colors">
-           <a href="{{ route('posts.show', $post->slug) }}" class="hover:underline">{{ $post->title }}</a>
+           <a href="{{ route('dashboard.posts.show', $post->slug) }}" class="hover:underline">{{ $post->title }}</a>
         </h4>
         <p class="text-on-surface-variant-light dark:text-on-surface-variant text-body-md line-clamp-2 hidden md:block">
             {{ $post->description }}
@@ -25,10 +25,12 @@
                 <span class="text-on-surface-variant-light dark:text-outline text-label-caps font-label-caps">•
                     {{ $post->publish_time }}
                 </span>
+                <span class="text-on-surface-variant-light dark:text-outline text-label-caps font-label-caps">•
+                    {{ $post->comments->count() }} {{ $post->comments->count() === 1 ? 'COMMENT' : 'COMMENTS' }}
+                </span>
             </div>
             
-            <button
-                class="material-symbols-outlined text-outline-light dark:text-outline hover:text-primary transition-colors">bookmark</button>
+            <x-bookmark-button :post="$post" class="text-outline-light dark:text-outline hover:text-primary transition-colors" />
         </div>
     </div>
 </article>

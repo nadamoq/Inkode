@@ -84,6 +84,28 @@ class Post extends Model
 
         return $this->hasMany(Comment::class);
     }
+    public function bookmarkedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
+    }
+    public function isBookmarkedBy(?User $user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+        return $this->bookmarkedByUsers()->where('user_id', $user->id)->exists();
+    }
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+    }
+    public function isLikedBy(?User $user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+        return $this->likedByUsers()->where('user_id', $user->id)->exists();
+    }
     public function content(): Attribute
     {
         return new Attribute(

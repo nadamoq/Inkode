@@ -3,7 +3,10 @@
 use App\Http\Controllers\AdminDashboard\UserController;
 use App\Http\Controllers\AiWriteController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
@@ -24,7 +27,7 @@ Route::prefix('dashboard')->middleware(['auth', 'checkactive'])->name('dashboard
     Route::resource('categories', CategoryController::class);
     Route::put('/posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
     Route::delete('/posts/{post}/force-delete', [PostController::class, 'forceDelete'])->name('posts.force-delete');
-    Route::resource('posts', PostController::class);
+    Route::resource('/posts', PostController::class);
     Route::post('posts/ai',AiWriteController::class)->name('posts.ai');
     
     Route::prefix('/admin')->middleware(EnsureUserType::class)->group(function () {
@@ -49,6 +52,12 @@ Route::prefix('dashboard')->middleware(['auth', 'checkactive'])->name('dashboard
 Route::middleware('auth')->group(function () {
     Route::delete('user/{user}/unfollow', [FollowController::class, 'destroy'])->name('unFollow');
     Route::post('user/{user}/follow', [FollowController::class, 'store'])->name('follow');
+    Route::post('posts/{post}/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store');
+    Route::delete('posts/{post}/bookmark', [BookmarkController::class, 'destroy'])->name('bookmark.destroy');
+    Route::post('posts/{post}/like', [PostLikeController::class, 'toggle'])->name('posts.like');
+    Route::post('posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 
 Route::get('/show-post/{post:slug}', [UserPostController::class, 'show'])->name('posts.show');

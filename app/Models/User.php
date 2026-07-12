@@ -90,6 +90,19 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')
             ->withPivot(['id', 'created_at']);
     }
+    public function bookmarkedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'bookmarks')->withTimestamps();
+    }
+
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
     public function hasAbility(string $ability):bool{
 
         foreach($this->roles as $role){

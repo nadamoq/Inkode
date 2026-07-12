@@ -268,13 +268,7 @@
         <aside class="hidden lg:block w-16">
             <div
                 class="sticky top-32 space-y-8 flex flex-col items-center py-4 bg-surface-container rounded-2xl border border-outline-variant transition-colors">
-                <div class="flex flex-col items-center gap-1 group cursor-pointer">
-                    <button
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
-                        <span class="material-symbols-outlined">favorite</span>
-                    </button>
-                    <span class="text-xs font-semibold text-secondary">1.2k</span>
-                </div>
+                <x-like-button :post="$post" layout="stacked" />
                 <div class="flex flex-col items-center gap-1 group cursor-pointer">
                     <button
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
@@ -283,10 +277,7 @@
                     <span class="text-xs font-semibold text-secondary">{{ $post->comments->count() }}</span>
                 </div>
                 <div class="w-8 h-px bg-outline-variant"></div>
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
-                    <span class="material-symbols-outlined">bookmark</span>
-                </button>
+                <x-bookmark-button :post="$post" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant" />
                 <button
                     class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/20 hover:text-primary transition-colors text-on-surface-variant">
                     <span class="material-symbols-outlined">share</span>
@@ -388,6 +379,8 @@
                 </div> --}}
                 {!! $post->content !!}
             </div>
+            
+            <x-comments-section :post="$post" />
         </article>
         <!-- Right Sidebar: Author Metadata (Sticky) -->
         <aside class="hidden lg:block w-72">
