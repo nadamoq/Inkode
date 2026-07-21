@@ -25,11 +25,11 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
             //
-            'name'=>'sometimes|string|min:3|max:250',
-            'type'=>'string|string|min:3|max:50',
-            'abilities'=>['nullable','array',],
-            'abilities.*'=>['nullable','string',Rule::in(array_keys(Config('abilities')))]
-     
+            'name' => 'sometimes|string|min:3|max:250',
+            'type' => 'string|string|min:3|max:50',
+            'abilities' => ['nullable', 'array'],
+            'abilities.*' => ['nullable', 'string', Rule::in(array_keys(Config('abilities')))],
+
         ];
     }
 }

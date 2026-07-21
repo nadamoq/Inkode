@@ -3,18 +3,19 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function before( $user ){
-        if($user->type=='super-admin'){
+    public function before($user)
+    {
+        if ($user->type == 'super-admin') {
             return true;
         }
     }
+
     public function viewAny(User $user): bool
     {
         return $user->hasAbility('users.view');
@@ -28,8 +29,6 @@ class UserPolicy
         return $user->hasAbility('users.view');
     }
 
-   
-
     /**
      * Determine whether the user can delete the model.
      */
@@ -37,6 +36,4 @@ class UserPolicy
     {
         return $user->hasAbility('users.delete');
     }
-
-   
 }

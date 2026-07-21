@@ -21,9 +21,9 @@ class UserController extends Controller
         // }
         $this->authorize('users.viewAny');
         $users = User::paginate(10);
+
         return response()->view('dashboard.users.index', ['users' => $users]);
     }
-
 
     /**
      * Display the specified resource.
@@ -32,9 +32,9 @@ class UserController extends Controller
     {
         //
         $this->authorizeForUser(auth()->user(), 'view', $user);
+
         return response()->view('dashboard.users.show', ['user' => $user]);
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -44,21 +44,26 @@ class UserController extends Controller
         //
         $this->authorizeForUser(auth()->user(), 'delete', User::class);
         $user->delete();
+
         return redirect()->back()->with('success', 'deleted successfully');
     }
+
     public function editRoles(User $user)
     {
 
-        $roles=Role::all();
-        return view('dashboard.users.user-roles', ['user' => $user, 'roles'=>$roles]);
+        $roles = Role::all();
+
+        return view('dashboard.users.user-roles', ['user' => $user, 'roles' => $roles]);
     }
-    public function assignRole(Request $request,User $user)
+
+    public function assignRole(Request $request, User $user)
     {
         $validated = $request->validate([
             'roles' => 'nullable|array',
-            'roles.*' => 'exists:roles,id'
+            'roles.*' => 'exists:roles,id',
         ]);
-        $user->roles()->sync($validated['roles']??[]);
+        $user->roles()->sync($validated['roles'] ?? []);
+
         return redirect()->route('dashboard.users.index')->with('success', 'assigned successfully');
     }
 }

@@ -7,29 +7,30 @@ use App\Models\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 // #[ScopedBy(OwnerScope::class)]
 class Post extends Model
 {
     //
-    use SoftDeletes;
+    use HasFactory,SoftDeletes;
 
-    protected $fillable = ['title', 'content', 'slug', 'status', 'user_id', 'category_id', 'image', 'published_at', 'excerpt',];
+    protected $fillable = ['title', 'content', 'slug', 'status', 'user_id', 'category_id', 'image', 'published_at', 'excerpt'];
 
-    protected $casts = ['published_at' => 'datetime', 'metadata' => 'json', 'status' => PostStatus::class,];
+    protected $casts = ['published_at' => 'datetime', 'metadata' => 'json', 'status' => PostStatus::class];
+
     protected $hidden = ['deleted_at'];
-    protected $appends = ['read_time','publish_time','thumbnail_url'];
+
+    protected $appends = ['read_time', 'publish_time', 'thumbnail_url'];
 
     public function scopePublished(Builder $builder, string|\DateTime|null $time = null)
     {
         $builder
-            //->withoutGlobalScope('owner')
+            // ->withoutGlobalScope('owner')
             ->where('status', PostStatus::Published)
             ->where(function ($query) use ($time) {
                 $query->whereNotNull('published_at')
@@ -52,8 +53,6 @@ class Post extends Model
         return 'slug';
     }
 
-
-
     public function category()
     {
 
@@ -74,51 +73,62 @@ class Post extends Model
 
         return $this->belongsTo(User::class, 'user_id');
     }
+
     public function tags()
     {
 
         return $this->belongsToMany(Tag::class, 'post_tag');
     }
+
     public function comments()
     {
 
         return $this->hasMany(Comment::class);
     }
+
     public function bookmarkedByUsers()
     {
         return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
     }
+
     public function isBookmarkedBy(?User $user): bool
     {
-        if (!$user) {
+        if (! $user) {
             return false;
         }
+
         return $this->bookmarkedByUsers()->where('user_id', $user->id)->exists();
     }
+
     public function likedByUsers()
     {
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
+
     public function isLikedBy(?User $user): bool
     {
-        if (!$user) {
+        if (! $user) {
             return false;
         }
+
         return $this->likedByUsers()->where('user_id', $user->id)->exists();
     }
+
     public function content(): Attribute
     {
         return new Attribute(
-            set: fn($value) => strip_tags($value, '<h2><h3><h4><h5><h6><p><br><hr><img><a><ul><li><ol><video><audio>'),
+            set: fn ($value) => strip_tags($value, '<h2><h3><h4><h5><h6><p><br><hr><img><a><ul><li><ol><video><audio>'),
         );
     }
+
     public function title(): Attribute
     {
         return new Attribute(
-            get: fn($value) => ucwords($value),
-            set: fn($value) => strip_tags($value)
+            get: fn ($value) => ucwords($value),
+            set: fn ($value) => strip_tags($value)
         );
     }
+
     public function thumbnailUrl(): Attribute
     {
         return new Attribute(
@@ -127,15 +137,17 @@ class Post extends Model
             }
         );
     }
+
     public function publishTime(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->published_at ? $this->published_at->format('M j, Y') : $this->created_at->format('M j, Y')
+            get: fn () => $this->published_at ? $this->published_at->format('M j, Y') : $this->created_at->format('M j, Y')
 
         );
     }
-    public function readTime():Attribute{
-        return (new Attribute(get:fn()=>
-            \ceil(str_word_count((string)$this->content)/200)))->shouldCache();
+
+    public function readTime(): Attribute
+    {
+        return (new Attribute(get: fn () => \ceil(str_word_count((string) $this->content) / 200)))->shouldCache();
     }
 }

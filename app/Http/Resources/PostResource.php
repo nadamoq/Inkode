@@ -17,14 +17,16 @@ class PostResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'slug' => $this->slug,
             'content' => $this->content,
             'cover_url' => $this->thumnail_url,
+            'user_id' => $this->user_id,
             'status' => [
                 'status' => $this->status->value,
-                'color' => $this->status->setColor()
+                'color' => $this->status->setColor(),
             ],
-           
-            'published_at'=>$this->when($this->published_at,$this->published_at),
+
+            'published_at' => $this->when($this->published_at, $this->published_at),
 
         ];
     }

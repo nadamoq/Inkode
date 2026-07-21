@@ -7,6 +7,7 @@ use App\Models\post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 class PostObserver
 {
     /**
@@ -15,9 +16,16 @@ class PostObserver
     public function creating(post $post): void
     {
         //
-        $post->slug=Str::slug($post->title);
-        $post->status=PostStatus::Published;
-        $post->user_id=Auth::id()??3;
+        if (! $post->slug) {
+            $post->slug = Str::slug($post->title);
+
+        }
+        $post->status = PostStatus::Published;
+        if (! $post->user_id) {
+            $post->user_id = Auth::id() ?? 3;
+
+        }
+
     }
 
     /**
@@ -26,9 +34,9 @@ class PostObserver
     public function updating(post $post): void
     {
         //
-        if($post->isDirty('title')){
+        if ($post->isDirty('title')) {
 
-            $post->slug=Str::slug($post->title);
+            $post->slug = Str::slug($post->title);
         }
 
     }
@@ -39,7 +47,7 @@ class PostObserver
     public function deleted(post $post): void
     {
         //
-        $post->status=PostStatus::Archived;
+        $post->status = PostStatus::Archived;
     }
 
     /**
@@ -48,7 +56,7 @@ class PostObserver
     public function restored(post $post): void
     {
         //
-         $post->status=PostStatus::Published;
+        $post->status = PostStatus::Published;
     }
 
     /**
@@ -57,7 +65,7 @@ class PostObserver
     public function forceDeleted(post $post): void
     {
         //
-         if ($post->image) {
+        if ($post->image) {
             Storage::disk('public')->delete($post->image);
         }
     }

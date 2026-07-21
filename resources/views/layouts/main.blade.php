@@ -272,9 +272,7 @@
                 </nav>
             </div>
             <div class="flex items-center gap-md">
-                <button
-                    class="material-symbols-outlined text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-colors">search</button>
-                <button
+                 <button
                     class="material-symbols-outlined text-on-surface-variant-light dark:text-on-surface-variant hover:text-primary transition-all p-2 rounded-lg hover:bg-primary/10"
                     id="theme-toggle">
                     <span class="hidden dark:block" id="theme-icon-dark">light_mode</span>

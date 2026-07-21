@@ -8,16 +8,14 @@ use App\Ai\Agents\SeoAgent;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use App\Models\Tag;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Ai\Enums\Lab;
 use Throwable;
 
 class PostService
 {
-
     /**
      * Create a new class instance.
      */
@@ -25,14 +23,18 @@ class PostService
     {
         //
 
-
-
     }
-    public function store(PostRequest $request): Post|null
+
+    public function store(array|PostRequest $request): ?Post
     {
+        if ($request instanceof PostRequest) {
 
-        $clean = $request->validated();
+            $clean = $request->validated();
 
+        } else {
+            $validator = Validator::make($request, ['title' => 'required|string|min:3|max:255', 'content' => 'required|string|min:3', 'tags' => 'nullable|string']);
+            $clean = $validator->validate();
+        }
         DB::beginTransaction();
 
         try {
@@ -44,26 +46,27 @@ class PostService
 
             $post = Post::create($data);
             $content = strip_tags($post->content);
-            $prompt = "Generate SEO metadata and summary (maximum words: 100) for this blog post.
-                - Post title: {$post->title}
-                - Post Content: {$content}";
-            $seoAgent = new SeoAgent;
-            $response = $seoAgent->prompt(
-                prompt: $prompt,
-                provider: Lab::Groq,
-                model: 'openai/gpt-oss-20b',
-            );
-            $post->metadata = [
-                'title' => $response['title'] ?? '',
-                'description' => $response['description'] ?? '',
-                'keywords' => implode(', ', $response['keywords'] ?? []),
-                'summary' => $response['summary'] ?? '',
-            ];
-            $post->excerpt=$response['summary'] ?? '';
+            // $prompt = "Generate SEO metadata and summary (maximum words: 100) for this blog post.
+            //     - Post title: {$post->title}
+            //     - Post Content: {$content}";
+            // $seoAgent = new SeoAgent;
+            // $response = $seoAgent->prompt(
+            //     prompt: $prompt,
+            //     provider: Lab::Groq,
+            //     model: 'openai/gpt-oss-20b',
+            // );
+            // $post->metadata = [
+            //     'title' => $response['title'] ?? '',
+            //     'description' => $response['description'] ?? '',
+            //     'keywords' => implode(', ', $response['keywords'] ?? []),
+            //     'summary' => $response['summary'] ?? '',
+            // ];
+            // $post->excerpt=$response['summary'] ?? '';
             $post->save();
             $this->Synctags->handle($post, $data['tags']);
-                dd($post);
+
             DB::commit();
+
             return $post;
         } catch (Throwable $e) {
 
@@ -71,6 +74,7 @@ class PostService
             throw $e;
         }
     }
+
     public function update(UpdatePostRequest $request, Post $post)
     {
 
@@ -88,6 +92,7 @@ class PostService
         }
 
         $this->Synctags->handle($post, $data['tags'] ?? null);
+
         return true;
     }
 }

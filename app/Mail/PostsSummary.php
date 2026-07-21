@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\Post;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -40,7 +39,7 @@ class PostsSummary extends Mailable
     {
         return new Content(
             view: 'view.mails.post-summary',
-            with:['posts'=>$this->posts]
+            with: ['posts' => $this->posts]
         );
     }
 

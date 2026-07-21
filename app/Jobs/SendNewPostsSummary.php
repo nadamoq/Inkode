@@ -27,14 +27,14 @@ class SendNewPostsSummary implements ShouldQueue
     public function handle(): void
     {
         //
-        $posts=Post::published()
-                    ->where('created_at','>=',now()->startOfWeek())
-                    ->where('created_at','<=',now()->endOfWeek())
-                    ->orderBy('created_at','desc')
-                    ->get();
+        $posts = Post::published()
+            ->where('created_at', '>=', now()->startOfWeek())
+            ->where('created_at', '<=', now()->endOfWeek())
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-                    $mailable=new PostsSummary($posts);
-        $user=User::cursor()->each(function($user)use ($mailable){
+        $mailable = new PostsSummary($posts);
+        $user = User::cursor()->each(function ($user) use ($mailable) {
             Mail::to($user->email)->send($mailable);
         });
     }

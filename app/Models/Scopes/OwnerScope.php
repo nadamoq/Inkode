@@ -16,16 +16,16 @@ class OwnerScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         //
-        if(Auth::check()){
-            $user=Auth::user();
-            if($user->is_admin){
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->is_admin) {
                 return;
             }
-            //خلينا السكوب سمارت عشان مايتم تطبيقه الا فقط على راوتس الداشبورد
-             if (Route::is('dashboard.*')) {
+            // خلينا السكوب سمارت عشان مايتم تطبيقه الا فقط على راوتس الداشبورد
+            if (Route::is('dashboard.*')) {
                 $builder->where('user_id', $user->id);
             }
         }
-       
+
     }
 }

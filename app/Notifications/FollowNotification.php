@@ -4,11 +4,9 @@ namespace App\Notifications;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Broadcast;
 
 class FollowNotification extends Notification
 {
@@ -45,6 +43,7 @@ class FollowNotification extends Notification
             ->action('View Profile', route('user.profile', $this->follower->username))
             ->line('Thank you for using our application!');
     }
+
     public function toDatabase(object $notifiable)
     {
         return [
@@ -53,21 +52,22 @@ class FollowNotification extends Notification
             'follower_name' => $this->follower->name,
             'link' => route('user.profile', $this->follower->username),
             'meta' => [
-                'follower_id'   => $this->follower->id,
-                'follower_avatar'   =>  $this->follower->avatar,
+                'follower_id' => $this->follower->id,
+                'follower_avatar' => $this->follower->avatar,
 
-            ]
+            ],
         ];
     }
-    public function toBroadcast(object $notifiable): array |BroadcastMessage
+
+    public function toBroadcast(object $notifiable): array|BroadcastMessage
     {
-        return new BroadcastMessage([ 'title' => 'new follower',
+        return new BroadcastMessage(['title' => 'new follower',
             'body' => "{$this->follower->name} started following you",
             'follower_name' => $this->follower->name,
             'link' => route('user.profile', $this->follower->username),
             'meta' => [
-                'follower_id'   => $this->follower->id,
-                'follower_avatar'   =>  $this->follower->avatar,
+                'follower_id' => $this->follower->id,
+                'follower_avatar' => $this->follower->avatar,
 
             ]]);
     }
@@ -81,7 +81,7 @@ class FollowNotification extends Notification
     {
         return [
             //
-           
+
         ];
     }
 }

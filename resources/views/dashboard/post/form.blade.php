@@ -513,8 +513,11 @@
                     @error('excerpt')
                         <p class="text-red-500 text-sm"style='color: red !important'>{{ $message }}</p>
                     @enderror
-                    <button class="content-ai" id=" ai">write with Ai</button>
-                    <!-- Main Content Editor -->
+                    <button type="button" id="ai" class="flex items-center gap-2 px-6 py-2.5 rounded-full font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all duration-300 shadow-lg shadow-violet-500/30 active:scale-95">
+  <!-- يمكنك إضافة أيقونة هنا -->
+                    <span>✨</span>
+                    Write with AI
+                    </button>  <!-- Main Content Editor -->
                     <textarea name="content" id="content"
                         class="w-full min-h-[600px] bg-transparent border-none focus:outline-none font-body-lg text-body-lg text-on-surface leading-relaxed placeholder:text-outline"
                         contenteditable="true" data-placeholder="Start writing your story...">
@@ -591,16 +594,30 @@
     </div>
     @push('script')
         <script>
-            const btn=document.getElementById('ai');
-            btn.addEventListener('click',function name(event){
-                event.preventDefault();
-                let message=window.prompt('Describe the content you want to generate:');
-                if(message){
-                    const evtsrc
+            const btn = document.getElementById('ai');
+    const content = document.getElementById('content');
+    btn.addEventListener('click', function name(event) {
+        event.preventDefault();
+        let message = window.prompt('Describe your post idea:');
+        if (message) {
+            const evtSource = new EventSource("{{ route('dashboard.posts.ai') }}?message=" + message);
+            evtSource.onmessage = function (event) {
+                try {
+                    let data = JSON.parse(event.data);
+                    console.log(data?.delta);
+                    content.value = content.value + (data?.delta || '');
+                } catch (e) {
+                    console.error("JSON parse error", e);
                 }
-            });
+            };
+            evtSource.onerror = function (event) {
+                console.error("EventSource failed.");
+                evtSource.close();
+            };
+        }
+    })
         </script>
-        <script>
+      {{--  <script>
             (function() {
                 const lightContentStyle = `
                     body{background:#ffffff;color:#191c1e;font-family: Inter, Arial, sans-serif;line-height:1.7;font-size:16px;}
@@ -618,15 +635,15 @@
                     ::selection{background:#8083ff;color:#0d0096}
                     img{max-width:100%;height:auto}`;
 
-                const plugins = [
-                    'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'media',
-                    'searchreplace', 'table', 'visualblocks', 'wordcount',
-                    'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker',
-                    'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate',
-                    'tinymceai', 'uploadcare', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes',
-                    'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword',
-                    'exportpdf'
-                ];
+                // const plugins = [
+                //     'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'media',
+                //     'searchreplace', 'table', 'visualblocks', 'wordcount',
+                //     'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker',
+                //     'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate',
+                //     'tinymceai', 'uploadcare', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes',
+                //     'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword',
+                //     'exportpdf'
+                // ];
 
                 const toolbar = 'undo redo | tinymceai-chat tinymceai-quickactions tinymceai-review | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat';
 
@@ -707,7 +724,7 @@
 
                 observer.observe(document.documentElement, { attributes: true });
             })();
-        </script>
+        </script> --}}
         <script>
             const allTags = @json($allTags);
             const existingTags = @json($existingTags);

@@ -4,6 +4,9 @@
         <!-- Main Content Area -->
         <div class="col-span-12 lg:col-span-8 space-y-xl">
             <!-- Featured Article -->
+            @php
+                $post=$posts->first();
+            @endphp
             <section class="group relative">
                 <a href="{{ route('dashboard.posts.show', $post->slug) }}">
                     <div class="featured-border rounded-xl overflow-hidden glass-card transition-all duration-300">
@@ -14,9 +17,11 @@
                             </div>
                             <div class="md:w-1/2 p-lg flex flex-col justify-center">
                                 <div class="flex gap-xs mb-sm">
-                                    <span
-                                        class="bg-primary/10 px-xs py-1 rounded-full text-label-caps font-label-caps text-on-primary-fixed-variant">
-                                        #{{ $post->tags->first()->name }}</span>
+                                    @if(isSet($tags))
+                                        <span
+                                            class="bg-primary/10 px-xs py-1 rounded-full text-label-caps font-label-caps text-on-primary-fixed-variant">
+                                            #{{ $post->tags?->first()?->name }}</span>
+                                    @endif
                                     <span
                                         class="dark:text-on-surface-variant text-label-caps font-label-caps text-on-surface-light">{{$post->read_time}}
                                         MIN READ</span>
@@ -53,18 +58,19 @@
                     POPULAR TOPICS</h3>
 
                 <div class="flex gap-sm overflow-x-auto pb-2 scrollbar-hide no-scrollbar">
-                    @foreach ($tags as $tag)
-                        <a class="whitespace-nowrap px-md py-2 rounded-full bg-white dark:bg-surface-container-high border border-outline-light/40 dark:border-outline-variant/30 text-on-surface-light font-medium dark:text-on-surface hover:border-primary transition-colors text-body-md"
-                            href="#">#{{ $tag->name }}</a>
-                    @endforeach
-
+                    @if(isSet($tags))
+                        @foreach ($tags as $tag)
+                            <a class="whitespace-nowrap px-md py-2 rounded-full bg-white dark:bg-surface-container-high border border-outline-light/40 dark:border-outline-variant/30 text-on-surface-light font-medium dark:text-on-surface hover:border-primary transition-colors text-body-md"
+                                href="#">#{{ $tag->name }}</a>
+                        @endforeach
+                    @endif
                 </div>
             </section>
 
             <section class="space-y-md">
                 <div
                     class="flex justify-between items-end border-b border-outline-variant-light dark:border-outline-variant/10 pb-md">
-                    <h3 class="font-display text-headline-md dark:text-primary text-on-surface-light">Explore</h3>
+                    <h3 id="explore" class="font-display text-headline-md dark:text-primary text-on-surface-light scroll-mt-20">Explore</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
                     <!-- Top Collections Card -->
@@ -197,8 +203,9 @@
             <x-news-letter-signup title="The Inkode protocol" />
             <!-- Live Activity -->
             <x-live-activity title="Live Activity" />
-            <!-- Top Minds -->
-            <x-recommended-authors title="Top Authors" count=5 />
+            <div id="authors" class="scroll-mt-20">
+                <x-recommended-authors title="Top Authors" count=5 />
+            </div>
         </aside>
     </div>
 </x-layouts.front>

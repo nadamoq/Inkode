@@ -26,29 +26,28 @@ class PostRequest extends FormRequest
     {
         return [
             //
-             'title' => 'required|string|max:500|min:3',
-            'content' =>
-                    [ 
-                        'required',
-                        'string',
-                    new RestrictedContent(['god','admin','gay'])],
+            'title' => 'required|string|max:500|min:3',
+            'content' => [
+                'required',
+                'string',
+                new RestrictedContent(['god', 'admin', 'gay'])],
             'category_id' => 'required|exists:categories,id',
-            'cover_image' => 'required|image|max:2048|mimes:jpeg,png,jpg,gif,svg',
-            'excerpt'=>'nullable|string|min:5|max:80',
-            'tags'=>['nullable','string','min:2'],
-            'published_at'=>'nullable|date|after_or_equal:today',
-            'metadata'=>'nullable|array',
-            'metadata.url'=>'nullable|url|max:255',
-            'metadata.title'=>'nullable|string|max:255',
-            'metadata.description'=>'nullable|string|max:500',
-            'metadata.keywords'=>'nullable|string|max:255',
+            'cover_image' => 'nullable|image|max:2048|mimes:jpeg,png,jpg,gif,svg',
+            'excerpt' => 'nullable|string|min:5|max:80',
+            'tags' => ['nullable', 'string', 'min:2'],
+            'published_at' => 'nullable|date|after_or_equal:today',
+            'metadata' => 'nullable|array',
+            'metadata.url' => 'nullable|url|max:255',
+            'metadata.title' => 'nullable|string|max:255',
+            'metadata.description' => 'nullable|string|max:500',
+            'metadata.keywords' => 'nullable|string|max:255',
 
-            
         ];
     }
+
     #[Override]
     public function messages()
     {
-        return ['required'=>':attribute is required'];
+        return ['required' => ':attribute is required'];
     }
 }

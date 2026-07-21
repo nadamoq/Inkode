@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::table('roles', function (Blueprint $table) {
             //
             $table->string('type')->after('name');
-            
-        });
-        Schema::table('users',function(Blueprint $table){
 
-            $table->enum('type',['user','admin','super-admin'])->default('user')->after('name');
-            
+        });
+        Schema::table('users', function (Blueprint $table) {
+
+            $table->enum('type', ['user', 'admin', 'super-admin'])->default('user')->after('name');
+
         });
     }
 
@@ -28,16 +28,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
-        Schema::dropColumns('roles','type');
-        Schema::dropColumns('users','type');
-       
+
+        Schema::dropColumns('roles', 'type');
+        Schema::dropColumns('users', 'type');
+
         //    Schema::table('users', function (Blueprint $table) {
         //     //
-           
+
         //     $table->dropColumn('type');
         // });
-        
 
     }
 };

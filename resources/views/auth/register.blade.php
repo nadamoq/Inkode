@@ -240,7 +240,7 @@
                 <!-- Registration Form -->
                 @if($errors)
                 @foreach ($errors->all() as $error)
-                    {{$message}}
+                    {{$error}}
                 @endforeach
                 @endIf
                 <form action="{{route('register.store')}}" class="space-y-5" method="POST">

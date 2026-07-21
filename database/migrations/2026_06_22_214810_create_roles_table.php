@@ -17,10 +17,10 @@ return new class extends Migration
             $table->json('abilities')->nullable();
             $table->timestamps();
         });
-        Schema::create('role_user',function(Blueprint $table){
+        Schema::create('role_user', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
-            $table->primary(['user_id','role_id']);
+            $table->primary(['user_id', 'role_id']);
         });
     }
 

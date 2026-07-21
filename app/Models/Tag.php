@@ -7,14 +7,17 @@ use Illuminate\Support\Str;
 
 class Tag extends Model
 {
-   
     protected $fillable = ['name', 'slug'];
-    public $timestamps = false;
-    public function posts() {
 
-        return $this->belongsToMany(Post::class,'post_tag');
+    public $timestamps = false;
+
+    public function posts()
+    {
+
+        return $this->belongsToMany(Post::class, 'post_tag');
 
     }
+
     protected static function booted()
     {
         static::creating(function ($tag) {

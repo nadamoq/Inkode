@@ -17,7 +17,7 @@ return new class extends Migration
             $table->json('metadata')->nullable()->after('published_at');
             $table->softDeletes();
             $table->index('published_at');
-            
+
         });
     }
 
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->dropColumn('published_at');
             $table->dropColumn('metadata');
             $table->dropColumn('slug');
-            
+
         });
     }
 };

@@ -19,6 +19,7 @@ class EnsureUserType
         if ($user->type == 'user') {
             abort(403);
         }
+
         return $next($request);
     }
 }

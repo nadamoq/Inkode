@@ -5,18 +5,17 @@
         "copilot",
         "claude_code"
     ],
+    "cloud": false,
     "guidelines": true,
     "herd_mcp": false,
     "mcp": true,
-    "packages": [
-        "laravel/ai",
-        "laravel/fortify"
-    ],
     "sail": false,
     "skills": [
-        "pest-testing",
-        "tailwindcss-development",
         "ai-sdk-development",
-        "fortify-development"
+        "fortify-development",
+        "laravel-best-practices",
+        "pest-testing",
+        "echo-development",
+        "tailwindcss-development"
     ]
 }

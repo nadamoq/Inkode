@@ -386,7 +386,10 @@
         <aside class="hidden lg:block w-72">
             <div class="sticky top-32 space-y-6">
                 <div class="p-6 bg-surface-container rounded-2xl border border-outline-variant transition-colors">
+                    <a href="{{ route('user.profile', $post->author->username) }}" class="flex items-center gap-4">
+                    
                     <div class="flex flex-col items-center text-center">
+                        
                         <img class="w-20 h-20 rounded-full grayscale border-2 border-primary mb-4 object-cover"
                             src="{{ $post->author->avatar }}" alt="{{ $post->author->name }}" />
                         <h3 class="geist-font font-bold text-xl text-on-surface">{{ $post->author->name }}</h3>
@@ -405,6 +408,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 @if ($more->count() > 0)
                     <div
@@ -413,7 +417,7 @@
                             {{ $post->author->name }}</h4>
                         <div class="space-y-4">
                             @foreach ($more->get() as $item)
-                                <a class="block group" href="{{ route('posts.show', $item->slug) }}">
+                                <a class="block group" href="{{ route('dashboard.posts.show', $item->slug) }}">
                                     <p
                                         class="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors mb-1">
                                         {{ $item->title }}

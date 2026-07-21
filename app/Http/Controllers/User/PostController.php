@@ -5,9 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Events\PostViewed;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Models\Scopes\OwnerScope;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Broadcast;
 
 class PostController extends Controller
 {
@@ -34,9 +31,10 @@ class PostController extends Controller
             ->withoutGlobalScope('owner')
             ->published()
             ->take(2);
-        if (!($post->user_id == auth()->id())) {
+        if (! ($post->user_id == auth()->id())) {
             Broadcast(new PostViewed($post))->toOthers();
         }
+
         return view('blog.posts.show', [
             'post' => $post,
             'more' => $more,

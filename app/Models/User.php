@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -18,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasApiTokens, HasFactory,Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +33,6 @@ class User extends Authenticatable
         'active',
         'avatar',
         'country_code',
-
 
     ];
 
@@ -60,6 +58,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -80,16 +79,19 @@ class User extends Authenticatable
             }
         );
     }
+
     public function followers()
     {
         return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id')
             ->withPivot(['id', 'created_at']);
     }
+
     public function followings()
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')
             ->withPivot(['id', 'created_at']);
     }
+
     public function bookmarkedPosts()
     {
         return $this->belongsToMany(Post::class, 'bookmarks')->withTimestamps();
@@ -99,31 +101,37 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
     }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
-    public function hasAbility(string $ability):bool{
 
-        foreach($this->roles as $role){
+    public function hasAbility(string $ability): bool
+    {
 
-           return in_array($ability,$role->abilities);
-            
+        foreach ($this->roles as $role) {
+
+            return in_array($ability, $role->abilities);
+
         }
+
         return false;
     }
-    public function hasRole(Role $role){
-       
-        foreach($this->roles as $userRole){
 
-           if($userRole->name==$role->name){
-            return true;
-           }
+    public function hasRole(Role $role)
+    {
+
+        foreach ($this->roles as $userRole) {
+
+            if ($userRole->name == $role->name) {
+                return true;
+            }
 
         }
+
         return false;
-            
-        
+
     }
 
     // public function scopeWithFollowStatus(Builder $query): Builder

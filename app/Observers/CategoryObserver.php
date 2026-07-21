@@ -21,13 +21,14 @@ class CategoryObserver
     public function updating(Category $category): void
     {
         //
-        if($category->isDirty('name')){
+        if ($category->isDirty('name')) {
             $category->slug = str()->slug($category->name);
-           
+
         }
     }
-    public function deleted(Category $category){
+
+    public function deleted(Category $category)
+    {
         $category->posts()->delete();
     }
-
 }

@@ -1,41 +1,4 @@
-<!DOCTYPE html>
-
-<html class="dark" lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700;800&amp;display=swap" rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #171f33 0%, #0b1326 100%);
-        }
-
-        .font-display {
-            font-family: 'Geist', sans-serif;
-        }
-
-        .font-headline {
-            font-family: 'Geist', sans-serif;
-        }
-
-        .author-gradient {
-            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(183, 109, 255, 0.08) 0%, transparent 40%);
-        }
-    </style>
+<x-layouts.front>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -245,28 +208,26 @@
                                 <h1
                                     class="font-display text-4xl md:text-6xl font-extrabold text-on-surface mb-4 tracking-tighter leading-none">
                                     {{ $user->name }}</h1>
-                                <p
-                                    class="text-lg md:text-xl text-on-surface-variant max-w-2xl leading-relaxed font-medium">
-                                    Critical thinker, system architect, and full-stack storyteller. Exploring the
-                                    intersection of human psychology and decentralized technologies.</p>
+                                <p class="text-lg md:text-xl text-on-surface-variant max-w-2xl leading-relaxed font-medium">
+                                    {{ $user->name }} is an author sharing thoughtful technical stories, product ideas,
+                                    and long-form writing on the platform. Follow their latest published work below.
+                                </p>
                             </div>
                             <div class="flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
                                 <a class="flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors text-sm font-semibold"
                                     href="#">
                                     <span class="material-symbols-outlined text-[18px]" data-icon="link">link</span>
-                                    <span>elenarostova.io</span>
+                                    <span>{{ $user->username }}.inkode.io</span>
                                 </a>
                                 <a class="flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors text-sm font-semibold"
                                     href="#">
-                                    <span class="material-symbols-outlined text-[18px]"
-                                        data-icon="alternate_email">alternate_email</span>
+                                    <span class="material-symbols-outlined text-[18px]" data-icon="alternate_email">alternate_email</span>
                                     <span>{{ '@' . $user->username }}</span>
                                 </a>
                                 <a class="flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors text-sm font-semibold"
                                     href="#">
-                                    <span class="material-symbols-outlined text-[18px]"
-                                        data-icon="location_on">location_on</span>
-                                    <span>Berlin, Germany</span>
+                                    <span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                                    <span>{{ $user->country_code ? strtoupper($user->country_code) : $user->timezone }}</span>
                                 </a>
                             </div>
                             <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
@@ -288,23 +249,22 @@
                             <div
                                 class="bg-surface-container/40 backdrop-blur-xl border border-outline-variant/30 p-5 rounded-2xl min-w-[140px] hover:bg-surface-container/60 transition-colors">
                                 <span
-                                    class="block font-display text-2xl font-bold text-on-surface leading-none mb-1">840k</span>
+                                    class="block font-display text-2xl font-bold text-on-surface leading-none mb-1">{{ number_format($user->total_views ?? 0) }}</span>
                                 <span class="text-[10px] font-bold text-outline uppercase tracking-wider">Total
                                     Views</span>
                             </div>
                             <div
                                 class="bg-surface-container/40 backdrop-blur-xl border border-outline-variant/30 p-5 rounded-2xl min-w-[140px] hover:bg-surface-container/60 transition-colors">
                                 <span
-                                    class="block font-display text-2xl font-bold text-on-surface leading-none mb-1">142</span>
+                                    class="block font-display text-2xl font-bold text-on-surface leading-none mb-1">{{ number_format($user->published_posts_count) }}</span>
                                 <span
-                                    class="text-[10px] font-bold text-outline uppercase tracking-wider">Articles</span>
+                                    class="text-[10px] font-bold text-outline uppercase tracking-wider">Published</span>
                             </div>
                             <div
                                 class="bg-surface-container/40 backdrop-blur-xl border border-outline-variant/30 p-5 rounded-2xl min-w-[140px] hover:bg-surface-container/60 transition-colors">
                                 <span
-                                    class="block font-display text-2xl font-bold text-on-surface leading-none mb-1">4.9</span>
-                                <span class="text-[10px] font-bold text-outline uppercase tracking-wider">Avg
-                                    Rating</span>
+                                    class="block font-display text-2xl font-bold text-on-surface leading-none mb-1">{{ $user->created_at->format('M Y') }}</span>
+                                <span class="text-[10px] font-bold text-outline uppercase tracking-wider">Joined</span>
                             </div>
                         </div>
                     </div>
@@ -529,6 +489,4 @@
             themeToggleIcon.textContent = 'dark_mode';
         }
     </script>
-</body>
-
-</html>
+</x-layouts.front>

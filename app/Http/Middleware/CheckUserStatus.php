@@ -14,13 +14,13 @@ class CheckUserStatus
      * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    {   
-        $user=$request->user();
+    {
+        $user = $request->user();
 
-        if($user && $user->active){
+        if ($user && $user->active) {
             return $next($request);
         }
-        abort(403,'Your account is inactive');
-        
+        abort(403, 'Your account is inactive');
+
     }
 }

@@ -3,17 +3,18 @@
 namespace App\Ai\Agents;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
-use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Promptable;
-use Override;
 use Stringable;
 
-class WriterAgent implements Agent, Conversational, HasTools ,HasStructuredOutput
+#[Provider(Lab::Groq)]
+class WriterAgent implements Agent, Conversational, HasTools
 {
     use Promptable;
 
@@ -44,11 +45,11 @@ class WriterAgent implements Agent, Conversational, HasTools ,HasStructuredOutpu
     {
         return [];
     }
-    #[Override]
+
     public function schema(JsonSchema $schema): array
     {
         return [
-        'title'=>$schema->string()->required(),    
-        'content'=>$schema->string()->required(),  ];
+            'title' => $schema->string()->required(),
+            'content' => $schema->string()->required(),  ];
     }
 }

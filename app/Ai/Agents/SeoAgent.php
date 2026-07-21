@@ -13,7 +13,7 @@ use Laravel\Ai\Promptable;
 use Override;
 use Stringable;
 
-class SeoAgent implements Agent, Conversational, HasTools, HasStructuredOutput
+class SeoAgent implements Agent, Conversational, HasStructuredOutput, HasTools
 {
     use Promptable;
 
@@ -22,7 +22,7 @@ class SeoAgent implements Agent, Conversational, HasTools, HasStructuredOutput
      */
     public function instructions(): Stringable|string
     {
-        return "You are the core SEO Agent of Inkode, an advanced multi-author publishing platform. Your mission is to maximize the search visibility and semantic relevance of articles.";
+        return 'You are the core SEO Agent of Inkode, an advanced multi-author publishing platform. Your mission is to maximize the search visibility and semantic relevance of articles.';
     }
 
     /**
@@ -44,11 +44,12 @@ class SeoAgent implements Agent, Conversational, HasTools, HasStructuredOutput
     {
         return [];
     }
+
     #[Override]
     public function schema(JsonSchema $schema): array
     {
         return [
-             'title' => $schema->string()->required(),
+            'title' => $schema->string()->required(),
             'description' => $schema->string()->required(),
             'summary' => $schema->string()->required(),
             'keywords' => $schema->array()

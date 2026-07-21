@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\FileUpload;
-use App\Actions\SyncPostTags;
 use App\Events\PostViewed;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -13,9 +12,7 @@ use App\Models\Tag;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
 use Throwable;
 
 class PostController extends Controller
@@ -26,7 +23,6 @@ class PostController extends Controller
     public function index(Request $request)
     {
         //
-
 
         $status = $request->query('status');
 
@@ -49,22 +45,22 @@ class PostController extends Controller
         }
 
         $posts = $posts->withTrashed()
-                ->with(['category','likedByUsers'])
-                ->select(
-                    'id',
-                    'title',
-                    'slug',
-                    'excerpt',
-                    'content',
-                    'status',
-                    'category_id',
-                    'image',
-                    'published_at',
-                    'views',
-                    'deleted_at'
-                )->withCount('comments')
-                ->latest()
-                ->paginate(5);
+            ->with(['category', 'likedByUsers'])
+            ->select(
+                'id',
+                'title',
+                'slug',
+                'excerpt',
+                'content',
+                'status',
+                'category_id',
+                'image',
+                'published_at',
+                'views',
+                'deleted_at'
+            )->withCount('comments')
+            ->latest()
+            ->paginate(5);
 
         return view('dashboard.post.index', ['posts' => $posts, 'status_options' => $status_options, 'status' => $status]);
     }
@@ -77,33 +73,33 @@ class PostController extends Controller
         //
         $categories = Category::all();
         $allTags = Tag::pluck('name');
-        return view('dashboard.post.create', ['post' => new Post(), 'categories' => $categories, 'allTags' => $allTags, 'existingTags' => []]);
+
+        return view('dashboard.post.create', ['post' => new Post, 'categories' => $categories, 'allTags' => $allTags, 'existingTags' => []]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostRequest $request, FileUpload $file,PostService $postService)
+    public function store(PostRequest $request, FileUpload $file, PostService $postService)
     {
         //
-        try{
+        try {
             $postService->store($request);
 
+        } catch (Throwable $e) {
+            return back()->withInput()->withErrors(['error' => 'Failed to create Post '.$e->getMessage()]);
+
         }
-        catch(Throwable $e){
-            return  back()->withInput()->withErrors(['error'=>'Failed to create Post '.$e->getMessage()]);
-    
-        }
-  
+
         return redirect()->route('dashboard.posts.index')->with(['success' => true, 'message' => 'Post created successfully']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(String $slug)
+    public function show(string $slug)
     {
-        
+
         $post = Post::query()
             ->published()
             ->with('likedByUsers')
@@ -130,18 +126,19 @@ class PostController extends Controller
         $categories = Category::all();
         $allTags = Tag::pluck('name')->toArray();
         $existingTags = $post->tags()->pluck('name')->toArray();
+
         return view('dashboard.post.edit', ['post' => $post, 'categories' => $categories, 'allTags' => $allTags, 'existingTags' => $existingTags]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, FileUpload $file, Post $post,PostService $postService)
-    {   
-        $postService->update($request,$post);
+    public function update(UpdatePostRequest $request, FileUpload $file, Post $post, PostService $postService)
+    {
+        $postService->update($request, $post);
+
         return redirect()->route('dashboard.posts.index')->with(['success' => true, 'message' => 'Post updated successfully']);
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -152,6 +149,7 @@ class PostController extends Controller
 
         return redirect()->route('dashboard.posts.index')->with(['success' => $result, 'message' => 'Post deleted successfully']);
     }
+
     public function restore(string $slug)
     {
         $post = Post::onlyTrashed()->slug($slug)->firstOrFail();
@@ -161,13 +159,12 @@ class PostController extends Controller
         return redirect()->route('dashboard.posts.index')
             ->with('status', 'Post restored!');
     }
+
     public function forceDelete(string $slug)
     {
         $post = Post::onlyTrashed()->slug($slug)->firstOrFail();
 
         $post->forceDelete();
-
-       
 
         // PRG: POST Redirect GET
         return redirect()->route('dashboard.posts.index')

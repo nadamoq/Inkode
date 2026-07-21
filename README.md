@@ -1,59 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Inkode - Modern Blogging & Publishing Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Inkode is a high-performance, modern publishing and blogging platform built with **Laravel 12**, **PHP 8.4**, **Tailwind CSS v4**, and **Pest 3**. It offers advanced user interaction features, AI-powered assistance, robust notification delivery, and sleek, contemporary aesthetics using glassmorphism.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Key Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Authentication & Security (Fortify-backed)**: Supports standard login, registration, email verification, two-factor authentication (2FA), and secure passkeys.
+- **Content Creation & Management**:
+  - Full CRUD operations on articles/posts with states (Draft, Published, Archived).
+  - AI writing assistant integrations.
+  - Image uploads and excerpt customization.
+  - Category-based filtering and tag management.
+- **Interactivity & Social Engagement**:
+  - **Likes & Bookmarks**: Users can bookmark posts for reading later or like articles to show appreciation.
+  - **Follow System**: Users can follow/unfollow authors. The home page features a custom **Trending Now** section showing top-viewed articles from followed users.
+  - **Nested Comments**: Users can comment on published posts.
+- **Real-Time Notification System**: Receive in-app notifications when new users follow you or interact with your posts, with options to mark read, unread, or delete.
+- **Role-Based Access Control (RBAC)**: Manage users, roles, and fine-grained capabilities in a dedicated admin dashboard.
+- **Aesthetic Design**: Modern layout utilizing Glassmorphism, tailored Tailwind CSS v4 palettes, dark mode support, and smooth micro-animations.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Technology Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Framework**: Laravel 12
+- **Language**: PHP 8.4
+- **Styling**: Tailwind CSS v4
+- **Testing**: Pest 3 / PHPUnit 11
+- **Asset Bundling**: Vite
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 💻 Getting Started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prerequisites
 
-### Premium Partners
+- PHP 8.4 or higher
+- Composer
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- A database engine (MySQL / SQLite / PostgreSQL)
 
-## Contributing
+### Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd elancer
+   ```
 
-## Code of Conduct
+2. **Install PHP dependencies**:
+   ```bash
+   composer install
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. **Install frontend dependencies**:
+   ```bash
+   npm install
+   ```
 
-## Security Vulnerabilities
+4. **Environment Setup**:
+   Copy `.env.example` to `.env` and configure your database settings:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Run Migrations & Seeders**:
+   ```bash
+   php artisan migrate --seed
+   ```
 
-## License
+6. **Start Dev Servers**:
+   Run Laravel's local server:
+   ```bash
+   php artisan serve
+   ```
+   And run Vite's development server in a separate terminal:
+   ```bash
+   npm run dev
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🧪 Testing
+
+The project uses **Pest 3** for feature and unit tests. Run the test suite using:
+
+```bash
+php artisan test --compact
+```

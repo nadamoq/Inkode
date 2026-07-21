@@ -6,7 +6,6 @@ use App\Http\Requests\CategoryReguest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 
-
 class CategoryController extends Controller
 {
     /**
@@ -16,6 +15,7 @@ class CategoryController extends Controller
     {
         //
         $categories = Category::all();
+
         return view('dashboard.category.index', compact('categories'));
 
     }
@@ -26,8 +26,9 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        $categories=Category::where('parent_id',null)->get();
-        return view('dashboard.category.create',['categories'=>$categories,'category'=>new Category()]);
+        $categories = Category::where('parent_id', null)->get();
+
+        return view('dashboard.category.create', ['categories' => $categories, 'category' => new Category]);
     }
 
     /**
@@ -36,7 +37,7 @@ class CategoryController extends Controller
     public function store(CategoryReguest $request)
     {
         //
-       
+
         Category::create($request->validated());
 
         return redirect()->route('dashboard.categories.index');
@@ -48,7 +49,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         //
-      
+
         return view('dashboard.category.show', compact('category'));
 
     }
@@ -60,6 +61,7 @@ class CategoryController extends Controller
     {
         //
         $categories = Category::where('parent_id', null)->where('id', '!=', $category->id)->get();
+
         return view('dashboard.category.edit', compact('category', 'categories'));
 
     }
@@ -70,13 +72,14 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         //
-       
+
         $updated = $category->update($request->validated());
-        if($updated){
+        if ($updated) {
             return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully.');
-          
+
         }
-         return back()->withErrors('Failed to update the category. Please try again.');
+
+        return back()->withErrors('Failed to update the category. Please try again.');
     }
 
     /**
@@ -86,6 +89,7 @@ class CategoryController extends Controller
     {
         //
         $category->delete();
+
         return redirect()->route('dashboard.categories.index');
     }
 }

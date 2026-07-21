@@ -4,8 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class StoreRoleRequest extends FormRequest
@@ -27,10 +25,10 @@ class StoreRoleRequest extends FormRequest
     {
         return [
             //
-            'name'=>'required|string|min:3|max:250',
-            'type'=>'required|string|min:3|max:50',
-            'abilities'=>['nullable','array',],
-            'abilities.*'=>['nullable','string',Rule::in(array_keys(Config('abilities')))]
+            'name' => 'required|string|min:3|max:250',
+            'type' => 'required|string|min:3|max:50',
+            'abilities' => ['nullable', 'array'],
+            'abilities.*' => ['nullable', 'string', Rule::in(array_keys(Config('abilities')))],
         ];
     }
 }

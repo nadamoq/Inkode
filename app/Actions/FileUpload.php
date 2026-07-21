@@ -9,16 +9,17 @@ class FileUpload
     /**
      * Create a new class instance.
      */
-    public function __construct(protected Request $request)
-    { }
+    public function __construct(protected Request $request) {}
 
-    public function handle(string $key,$path='/',$disk='public'){
+    public function handle(string $key, $path = '/', $disk = 'public')
+    {
 
-        if( $this->request->hasFile($key)){
+        if ($this->request->hasFile($key)) {
 
-          return  $this->request->file($key)->store($path,$disk);
-        
+            return $this->request->file($key)->store($path, $disk);
+
         }
+
         return null;
     }
 }

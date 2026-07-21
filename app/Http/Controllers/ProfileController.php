@@ -11,8 +11,12 @@ class ProfileController extends Controller
     {
         $user = User::query()
             ->where('username', $username)
-            // ->withFollowStatus()
-            ->withCount(['followers', 'posts'])
+            ->withCount([
+                'followers',
+                'posts as published_posts_count' => fn ($query) => $query->published(),
+            ])
+            ->withSum(['posts as total_views' => fn ($query) => $query->published()], 'views')
+            ->with(['posts' => fn ($query) => $query->published()->latest()])
             ->firstOrFail();
 
         return view('show-author-profile', compact('user'));

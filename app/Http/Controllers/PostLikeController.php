@@ -16,10 +16,11 @@ class PostLikeController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             if ($request->wantsJson()) {
                 return response()->json(['message' => 'Unauthenticated.'], 401);
             }
+
             return redirect()->route('login');
         }
 

@@ -16,7 +16,7 @@ class BookmarkController extends Controller
         $user = $request->user();
 
         // Check if already bookmarked
-        if (!$user->bookmarkedPosts()->where('post_id', $post->id)->exists()) {
+        if (! $user->bookmarkedPosts()->where('post_id', $post->id)->exists()) {
             $user->bookmarkedPosts()->attach($post->id);
         }
 

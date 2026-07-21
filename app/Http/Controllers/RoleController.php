@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
-    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //
-        $roles=Role::paginate(5);
-        return response()->view('dashboard.role.index',['roles'=>$roles]);
+        $roles = Role::paginate(5);
+
+        return response()->view('dashboard.role.index', ['roles' => $roles]);
     }
 
     /**
@@ -26,9 +25,10 @@ class RoleController extends Controller
     public function create()
     {
         //
-        $abilities=collect(array_keys(config('abilities')));
-        return response()->view('dashboard.role.create',['abilities'=>$abilities]);
-        
+        $abilities = collect(array_keys(config('abilities')));
+
+        return response()->view('dashboard.role.create', ['abilities' => $abilities]);
+
     }
 
     /**
@@ -37,22 +37,22 @@ class RoleController extends Controller
     public function store(StoreRoleRequest $request)
     {
         //
-        $role=Role::create($request->validated());
-       
-        return redirect()->route('dashboard.roles.index')->with('success','role is created successfully');
-        
+        $role = Role::create($request->validated());
+
+        return redirect()->route('dashboard.roles.index')->with('success', 'role is created successfully');
+
     }
 
-   
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Role $role)
     {
         //
-   
-        $abilities=array_keys(config('abilities'));
-        return response()->view('dashboard.role.edit',['abilities'=>$abilities,'role'=>$role]);
+
+        $abilities = array_keys(config('abilities'));
+
+        return response()->view('dashboard.role.edit', ['abilities' => $abilities, 'role' => $role]);
     }
 
     /**
@@ -62,10 +62,10 @@ class RoleController extends Controller
     {
         //
         $role->update($request->validated());
+
         return redirect()->route('dashboard.roles.index')->with('updated sucessfuly');
-        
+
     }
-    
 
     /**
      * Remove the specified resource from storage.
@@ -74,6 +74,7 @@ class RoleController extends Controller
     {
         //
         $role->delete();
-        return redirect()->back()->with('success','deleted sucessfuly');
+
+        return redirect()->back()->with('success', 'deleted sucessfuly');
     }
 }

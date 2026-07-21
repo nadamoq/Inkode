@@ -8,8 +8,8 @@ use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use App\Models\User;
 use App\Services\PostService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
@@ -23,6 +23,7 @@ class PostController extends Controller
     {
         //
         $posts = Post::published()->with('category')->paginate();
+
         return PostResource::collection($posts);
     }
 
@@ -34,17 +35,16 @@ class PostController extends Controller
         //
         try {
             /**
-             * @var \App\Models\User
+             * @var User
              */
             $user = Auth::guard('sanctum')->user();
             if (! $user->currentAccessToken()->can('post.create')) {
                 return response()->json(['error' => 'unauthorized', 'message' => 'you are not allowed'], 403);
             }
 
-
             $post = $postService->store($request);
         } catch (Throwable $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage(),], Response::HTTP_BAD_REQUEST);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         return response()->json(['status' => 'success', 'message' => 'Post created successfully', 'post' => new PostResource($post->refresh())], Response::HTTP_CREATED);
@@ -57,8 +57,9 @@ class PostController extends Controller
     {
 
         if ($post->status != PostStatus::Published) {
-            return  Response::HTTP_NOT_FOUND;
+            return Response::HTTP_NOT_FOUND;
         }
+
         return $post->load(['category:id,name', 'author:id,username']);
     }
 
@@ -72,7 +73,7 @@ class PostController extends Controller
 
             $postService->update($request, $post);
         } catch (Throwable $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage(),], Response::HTTP_BAD_REQUEST);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         return response()->json(['status' => 'success', 'message' => 'Post updated successfully'], Response::HTTP_CREATED);
@@ -85,6 +86,7 @@ class PostController extends Controller
     {
         //
         $post->delete();
+
         return Response::HTTP_NO_CONTENT;
     }
 }

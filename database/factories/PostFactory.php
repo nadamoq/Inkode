@@ -1,0 +1,36 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Post>
+ */
+class PostFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            //
+            'title' => fake()->words(10, true),
+            'content' => fake()->paragraphs(7, true),
+            'user_id' => User::factory(),
+            'category_id' => Category::factory(),
+            'status' => fake()->randomElement(['draft', 'published', 'archived']),
+            'views' => fake()->numberBetween(0, 1000),
+            'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'image' => fake()->imageUrl(800, 600, 'nature'),
+            'excerpt' => fake()->sentence(),
+            'slug' => fake()->slug(),
+        ];
+    }
+}

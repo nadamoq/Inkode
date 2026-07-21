@@ -13,17 +13,15 @@ class RestrictedContent implements ValidationRule
      *
      * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */
-    public function __construct(protected array $forbidden =[])
-    {
-        
-    }
+    public function __construct(protected array $forbidden = []) {}
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         //
-        $words=explode(' ',$value);
-        foreach($words as $word ){
+        $words = explode(' ', $value);
+        foreach ($words as $word) {
 
-            if(in_array(trim($word,' ,.!?()-#@'),$this->forbidden)){
+            if (in_array(trim($word, ' ,.!?()-#@'), $this->forbidden)) {
                 $fail("Integrety violation ,In $attribute field this is not allowed word ($word)");
             }
 

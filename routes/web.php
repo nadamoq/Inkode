@@ -2,14 +2,14 @@
 
 use App\Http\Controllers\AdminDashboard\UserController;
 use App\Http\Controllers\AiWriteController;
+use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
-use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\User\PostController as UserPostController;
@@ -24,22 +24,22 @@ Route::view('/article', 'blog.single-article-view');
 
 Route::prefix('dashboard')->middleware(['auth', 'checkactive'])->name('dashboard.')->group(function () {
 
+    Route::get('posts/ai', AiWriteController::class)->name('posts.ai');
+
     Route::resource('categories', CategoryController::class);
     Route::put('/posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
     Route::delete('/posts/{post}/force-delete', [PostController::class, 'forceDelete'])->name('posts.force-delete');
     Route::resource('/posts', PostController::class);
-    Route::post('posts/ai',AiWriteController::class)->name('posts.ai');
-    
+
     Route::prefix('/admin')->middleware(EnsureUserType::class)->group(function () {
 
         Route::post('/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('assignRole');
         Route::get('/user/{user}/role', [UserController::class, 'editRoles'])->name('assignRolePage');
         Route::resource('users', UserController::class);
     });
-    //users and roles
+    // users and roles
 
-    Route::resource('roles', RoleController::class)->middleware('can:viewAny,view,create,update,delete,' . Role::class);
-
+    Route::resource('roles', RoleController::class)->middleware('can:viewAny,view,create,update,delete,'.Role::class);
 
     Route::prefix('/notifications')->controller(NotificationController::class)->group(function () {
         Route::get('/', 'index')->name('index');

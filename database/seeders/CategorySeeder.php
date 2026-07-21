@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
@@ -13,8 +12,8 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        
-        Category::query()->delete();            
+
+        Category::query()->delete();
         $categories = [
             [
                 'name' => 'Literature & Writing',
@@ -25,9 +24,9 @@ class CategorySeeder extends Seeder
                     ['name' => 'Short Stories', 'slug' => 'short-stories', 'description' => 'Short story writing and collections.'],
                     ['name' => 'Poetry', 'slug' => 'poetry', 'description' => 'Poetry, verse, and poetic techniques.'],
                     ['name' => 'Thoughts & Reflections', 'slug' => 'thoughts-reflections', 'description' => 'Personal thoughts, essays, and reflections.'],
-                ]
+                ],
             ],
-        
+
             [
                 'name' => 'Technology & Programming',
                 'slug' => 'technology-programming',
@@ -37,9 +36,9 @@ class CategorySeeder extends Seeder
                     ['name' => 'Laravel', 'slug' => 'laravel', 'description' => 'Laravel framework tutorials and guides.'],
                     ['name' => 'JavaScript', 'slug' => 'javascript', 'description' => 'JavaScript, ES6, Node.js, and web technologies.'],
                     ['name' => 'PHP', 'slug' => 'php', 'description' => 'PHP programming and backend development.'],
-                ]
+                ],
             ],
-           
+
             [
                 'name' => 'Personal Development',
                 'slug' => 'personal-development',
@@ -48,9 +47,9 @@ class CategorySeeder extends Seeder
                 'children' => [
                     ['name' => 'Productivity', 'slug' => 'productivity', 'description' => 'Productivity tips, tools, and techniques.'],
                     ['name' => 'Habits', 'slug' => 'habits', 'description' => 'Building and maintaining good habits.'],
-                ]
+                ],
             ],
-            
+
             [
                 'name' => 'Culture & Knowledge',
                 'slug' => 'culture-knowledge',
@@ -59,7 +58,7 @@ class CategorySeeder extends Seeder
                 'children' => [
                     ['name' => 'Psychology', 'slug' => 'psychology', 'description' => 'Psychology, behavior, and human mind.'],
                     ['name' => 'Philosophy', 'slug' => 'philosophy', 'description' => 'Philosophy, ideas, and critical thinking.'],
-                ]
+                ],
             ],
         ];
 
@@ -67,9 +66,9 @@ class CategorySeeder extends Seeder
 
             $children = $category['children'] ?? [];
             unset($category['children']);
-            
+
             $parent = Category::create($category);
-            
+
             foreach ($children as $child) {
                 $child['parent_id'] = $parent->id;
                 Category::create($child);

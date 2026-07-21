@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('timezone')->default('UTC');
             $table->boolean('active')->default(true);
             $table->string('avatar')->nullable();
-            $table->string('country_code',2)->nullable();
-             $table->rememberToken();
+            $table->string('country_code', 2)->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
 

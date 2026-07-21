@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     //
-    protected $fillable = ['name', 'abilities','type'];
+    protected $fillable = ['name', 'abilities', 'type'];
 
     protected $casts = ['abilities' => 'json'];
 
@@ -15,7 +15,9 @@ class Role extends Model
     {
         return $this->belongsToMany(User::class);
     }
-    public function hasAblility(string $ability){
-       return in_array($ability,$this->abilities);
+
+    public function hasAblility(string $ability)
+    {
+        return in_array($ability, $this->abilities);
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\PostViewed;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cookie;
 
 class IncrementPostViews
@@ -32,11 +30,11 @@ class IncrementPostViews
         // if(in_array($event->post->id,$views)){
         //     return;
         // }
-         //Cookie::queue('PostViews',serialize($views),2);
-        
-        /////////////////////////
+        // Cookie::queue('PostViews',serialize($views),2);
 
-        $cookieName = 'post_viewed_' . $event->post->id;
+        // ///////////////////////
+
+        $cookieName = 'post_viewed_'.$event->post->id;
 
         if (Cookie::has($cookieName)) {
             return;
@@ -48,7 +46,6 @@ class IncrementPostViews
             30
         );
 
-           
         $event->post->increment('views');
 
     }

@@ -24,11 +24,11 @@ class CategoryReguest extends FormRequest
     {
         return [
             //
-            
+
             'name' => 'required|string|max:255',
             // 'slug' => 'required|unique:categories,slug',
             'description' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:categories,id'
+            'parent_id' => 'nullable|exists:categories,id',
 
         ];
     }
