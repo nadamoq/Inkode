@@ -60,5 +60,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 
-Route::get('/show-post/{post:slug}', [UserPostController::class, 'show'])->name('posts.show');
+// Route::get('/show-post/{post:slug}', [UserPostController::class, 'show'])->name('posts.show');
 Route::get('/u/{username}', [ProfileController::class, 'show'])->name('user.profile');

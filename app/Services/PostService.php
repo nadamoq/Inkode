@@ -44,24 +44,24 @@ class PostService
                 'published_at' => now(),
             ], $clean);
 
-            $post = Post::create($data);
+            $post = Post::query()->create($data);
             $content = strip_tags($post->content);
-            // $prompt = "Generate SEO metadata and summary (maximum words: 100) for this blog post.
-            //     - Post title: {$post->title}
-            //     - Post Content: {$content}";
-            // $seoAgent = new SeoAgent;
-            // $response = $seoAgent->prompt(
-            //     prompt: $prompt,
-            //     provider: Lab::Groq,
-            //     model: 'openai/gpt-oss-20b',
-            // );
-            // $post->metadata = [
-            //     'title' => $response['title'] ?? '',
-            //     'description' => $response['description'] ?? '',
-            //     'keywords' => implode(', ', $response['keywords'] ?? []),
-            //     'summary' => $response['summary'] ?? '',
-            // ];
-            // $post->excerpt=$response['summary'] ?? '';
+            $prompt = "Generate SEO metadata and summary (maximum words: 100) for this blog post.
+                - Post title: {$post->title}
+                - Post Content: {$content}";
+            $seoAgent = new SeoAgent;
+            $response = $seoAgent->prompt(
+                prompt: $prompt,
+                provider: Lab::Groq,
+                model: 'openai/gpt-oss-20b',
+            );
+            $post->metadata = [
+                'title' => $response['title'] ?? '',
+                'description' => $response['description'] ?? '',
+                'keywords' => implode(', ', $response['keywords'] ?? []),
+                'summary' => $response['summary'] ?? '',
+            ];
+            $post->excerpt=$response['summary'] ?? '';
             $post->save();
             $this->Synctags->handle($post, $data['tags']);
 
