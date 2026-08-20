@@ -1,3 +1,4 @@
+![Inkode Banner](./public/assets/images/Banner.png)
 # Inkode - Modern Blogging & Publishing Platform
 
 Inkode is a high-performance, modern publishing and blogging platform built with **Laravel 12**, **PHP 8.4**, **Tailwind CSS v4**, and **Pest 3**. It offers advanced user interaction features, AI-powered assistance, robust notification delivery, and sleek, contemporary aesthetics using glassmorphism.
@@ -45,8 +46,8 @@ Inkode is a high-performance, modern publishing and blogging platform built with
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd elancer
+   git clone [https://github.com/nadamoq/Inkode.git]
+   cd Inkode
    ```
 
 2. **Install PHP dependencies**:
